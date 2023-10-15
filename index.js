@@ -1,6 +1,6 @@
-alert("js cargado")
 
 let boton=document.getElementById("btnSubmit");
+
 boton.addEventListener("click", evento=>{
             registrarPelicula();
 });
@@ -14,7 +14,7 @@ let registrarPelicula = async()=>{
     fields.director=document.getElementById("director").value;
     fields.genre=document.getElementById("genre").value;
 
-    const peticion= await fetch("http://localhost:8080/api/peliculas",
+    const peticion= await fetch("http://localhost:9090/api/peliculas",
     {
         method:"POST",  
         headers: {

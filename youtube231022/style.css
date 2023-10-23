@@ -41,3 +41,68 @@
     left: 50%;
     transform: translateX(-50%);
 }
+.input-field{
+    background-color: #515966;
+    margin: 15px 0px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    transition: max-height 0.5s; /**/
+    overflow: hidden;/**/
+}
+input{
+    width:100%;
+    background: transparent;
+    border:0;
+    outline:none;
+    padding: 18px 15px;
+    color: #FFFFFF
+}
+
+input::placeholder{
+    color:#FFFFFF
+}
+.input-field i{
+    margin-left: 15px;
+    color:#04BD7D
+}
+
+form p{
+    color: #FFFFFF;
+    text-align: left;
+    font-size: 13px;    
+}
+
+form p a{
+    color:#04BD7D;
+    margin-left: 5px;
+}
+
+.btn-field{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-field button{
+    flex-basis:48%;
+    font-size: 16px;
+    background-color: #04BD7D;
+    color:#FFFFFF;
+    height: 40px;
+    border-radius: 10px;
+    border:0;
+    outline:0;
+    cursor:pointer;
+    transition: background-color 1s ease;
+   /* transition: background 1s;*/
+}
+
+.input-group{
+    height: 250px;
+
+}
+.btn-field button.disable{
+    background-color: #EAEAEA;
+    color: #2C2F35;
+}

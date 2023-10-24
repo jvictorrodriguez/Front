@@ -1,0 +1,11 @@
+i:hover{
+    color: aquamarine;
+    background-color: black;
+    scale: 1.5;
+    transform: rotate(0.5turn);
+    transition: 1s;
+}
+i{
+    transition: 1s;
+   
+}

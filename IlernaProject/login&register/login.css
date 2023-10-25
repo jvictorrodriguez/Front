@@ -15,13 +15,12 @@
 }
 
 .container{
-    width: 100%; /*para que ocupe todo el ancho de la página*/
-    height: 100vh;
-    background-color: var(--colorBackground);
     display: flex;          /*El conjunto de estos 3 atributos centran el container*/
     align-items: center;
     justify-content: center;
-    
+    width: 100%; /*para que ocupe todo el ancho de la página*/
+    height: 100vh;
+    background-color: var(--colorBackground);
 }
 
 .form-content{

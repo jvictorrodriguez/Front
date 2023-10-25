@@ -1,4 +1,17 @@
 :root {
+    --color1: #FFBE0B;
+    --color2:#FB5607;
+    --color3:#FF006E;
+    --color4:#8338EC;
+    --color5: #3a86ff;
+    --color6: grey;
+    --color11: #E63946;
+    --color12: #F1FAEE;
+    --color13: #A8DADC;
+    --color14: #457B9D;
+    --color15: #1d3557;
+
+
     --colorBackground: #515966;
     --colorBackgroundForm: #2C2F35;
     --colorLetters: white;

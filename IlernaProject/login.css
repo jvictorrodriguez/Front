@@ -1,4 +1,9 @@
 :root{
+    --colorBackground: #515966;
+    --colorBackgroundForm: #2C2F35;    
+    --colorLetters: white;
+    --colorTitle: var(--colorLetters);
+    --colorIcons: #04BD7D;
     --color1: red;
 }
 
@@ -6,81 +11,59 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
     font-family: Arial, Helvetica, sans-serif;
-    text-decoration: none;
 }
 
 .container{
     width: 100%; /*para que ocupe todo el ancho de la página*/
     height: 100vh;
-    background-color: #D0D0D0;
-    display: flex;
+    background-color: var(--colorBackground);
+    display: flex;          /*El conjunto de estos 3 atributos centran el container*/
     align-items: center;
     justify-content: center;
     
 }
 
 .form-content{
-    width:100%;
+    width:90%;
     max-width: 450px;
-    background-color: #2C2F35;
-    padding: 50px 60px 70px;
-    text-align: center;
+    background-color: var(--colorBackgroundForm);
+    padding: 50px 60px;             /*arriba y abajo, izq y dcha*/
     border-radius: 25px;
 }
 .form-content h1{
     font-size: 30px;
     margin-bottom: 60px;
-    color: #FFFFFF;
-    position: relative;
+    color: var(--colorTitle);
+    text-align: center;
+
 }
-.form-content h1::after{
-    content: 'a';
-    width: 30px;
-    height: 4px;
-    border-radius: 3px;
-    background-color: #04BD7D;
-    bottom: -12px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
+
 .input-field{
-    background-color: #515966;
+    background-color:var(--colorBackground);
     margin: 15px 0px;
     border-radius: 3px;
     display: flex;
     align-items: center;
-    transition: max-height 0.5s; /**/
-    overflow: hidden;/**/
+    transition: max-height 0.5s; /*Hace una transición mostrando/ocultando los inputs */
+    overflow: hidden;/*desbordamiento: Que hará con el contenido si no cabe.
+                        Marcamos que lo oculte*/
 }
 input{
     width:100%;
     background: transparent;
-    border:0;
-    outline:none;
+    border:0;       /*No muestra los bordes*/
+    outline:none;   /*No muestra bordes exteriors del input activo*/
     padding: 18px 15px;
-    color: #FFFFFF
+    color: var(--colorLetters)
 }
 
 input::placeholder{
-    color:#FFFFFF
+    color:var(--colorLetters)
 }
 .input-field i{
     margin-left: 15px;
-    color:#04BD7D
-}
-
-form p{
-    color: #FFFFFF;
-    text-align: left;
-    font-size: 13px;    
-}
-
-form p a{
-    color:#04BD7D;
-    margin-left: 5px;
+    color:var(--colorIcons)
 }
 
 .btn-field{
@@ -90,24 +73,22 @@ form p a{
 }
 
 .btn-field button{
-    flex-basis:48%;
+    flex-basis: 45%;
     font-size: 16px;
-    background-color: #04BD7D;
-    color:#FFFFFF;
+    background-color: var(--colorIcons);
+    color:var(--colorLetters);
     height: 40px;
     border-radius: 10px;
-    border:0;
-    outline:0;
+    border:0;   /**/
     cursor:pointer;
-    transition: background-color 1s ease;
-   /* transition: background 1s;*/
+    transition: background-color 0.5s ease;
 }
 
 .input-group{
-    height: 250px;
+    height: 220px;
 
 }
 .btn-field button.disable{
     background-color: #EAEAEA;
-    color: #2C2F35;
+    color:var(--colorBackgroundForm);
 }

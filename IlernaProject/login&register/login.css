@@ -1,10 +1,22 @@
-:root{
-    --colorBackground: #515966;
-    --colorBackgroundForm: #2C2F35;    
-    --colorLetters: white;
+:root {
+    --color1: #FFBE0B;
+    --color2:#FB5607;
+    --color3:#FF006E;
+    --color4:#8338EC;
+    --color5: #3a86ff;
+    --color6: grey;
+    --color11: #E63946;
+    --color12: #F1FAEE;
+    --color13: #A8DADC;
+    --color14: #457B9D;
+    --color15: #1d3557;
+
+    --colorBackground: var(--color15);
+    --colorBackgroundForm: var(--color14);
+    --colorLetters: var(--color1);
     --colorTitle: var(--colorLetters);
-    --colorIcons: #04BD7D;
-    --color1: red;
+    --colorIcons: var(--color11);
+    
 }
 
 *{
@@ -75,7 +87,8 @@ input::placeholder{
     flex-basis: 45%;
     font-size: 16px;
     background-color: var(--colorIcons);
-    color:var(--colorLetters);
+    color:var(--colorBackground);
+    
     height: 40px;
     border-radius: 10px;
     border:0;   /**/
@@ -88,6 +101,6 @@ input::placeholder{
 
 }
 .btn-field button.disable{
-    background-color: #EAEAEA;
-    color:var(--colorBackgroundForm);
+    background-color: var(--colorBackground);
+    color:var(--colorLetters);
 }

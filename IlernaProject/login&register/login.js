@@ -1,9 +1,12 @@
+let title = document.getElementById("title");
 let signUp= document.getElementById("signUp");
 let signIn= document.getElementById("signIn");
 let nameInput = document.getElementById("nameInput");
-let title = document.getElementById("title");
 
-signIn.addEventListener("click", ()=>{
+
+
+signIn.addEventListener("click",function(event){
+    event.preventDefault()
     nameInput.style.maxHeight="0px";
     title.innerHTML="Login";
     signUp.classList.add("disable");
@@ -16,3 +19,7 @@ signUp.addEventListener("click", ()=>{
     signIn.classList.add("disable");
     signUp.classList.remove("disable");
 })
+
+document.getElementById("myAnchor").addEventListener("click", function(event){
+    event.preventDefault()
+  });

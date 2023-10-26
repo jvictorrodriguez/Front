@@ -12,7 +12,7 @@
     <div class="container">
         <div class="form-content">
             <h1 id="title">Registro</h1>
-            <form action="" method="GET">
+            <form>
                 <div class="input-group">
                     <div class="input-field" id="nameInput">
                         <i class="material-symbols-outlined">Person</i>
@@ -26,11 +26,14 @@
                         <i class="material-symbols-outlined">Password</i>
                         <input type="password" id="password" placeholder="Contraseña" >
                     </div>
+                    <div>
+                        <p id="error"></p>
+                    </div>
                 </div>
                 <div class="btn-field">
                     <button id="signUp" class=""        type="button">Registro</button>
-                    <button id="signIn" class="disable" type="submit">Login</button>
-                    <p id="recibido"></p>
+                    <button id="signIn" class="disable" type="button">Login</button>
+                    
                 </div>
             </form>
         </div>

@@ -95,7 +95,7 @@ function logInFunction(valor) {
     
 
         const usuarioDto = {
-            name: fullName,
+            fullname: fullName,
             username: username,
             password: password
         }

@@ -1,6 +1,7 @@
 let $username = document.getElementById("username");
 let $password = document.getElementById("password");
 let $button=document.getElementById("submit");
+let $resultado= document.getElementById("resultado");
 
 
  
@@ -18,11 +19,11 @@ function ejecuta(){
     xhr.onreadystatechange = function(){
         if (this.readyState == 4 && this.status==200){
             recibido= xhr.responseText;
-           resultado.innerHTML = recibido;
+           $resultado.innerHTML = recibido;
         }
     }
 
-    xhr.open("GET","http://localhost:9000/login", true);
+    xhr.open("GET","http://localhost:9001/login", true);
     xhr.setRequestHeader("Authorization", "Basic " + `${auth}`);
     xhr.send();
     

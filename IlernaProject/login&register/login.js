@@ -1,3 +1,9 @@
+
+
+$username = document.getElementById("username").value;
+$password = document.getElementById("password").value;
+
+
 let title = document.getElementById("title");
 let signUp = document.getElementById("signUp");
 let signIn = document.getElementById("signIn");

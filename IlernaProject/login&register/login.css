@@ -20,87 +20,77 @@
 }
 
 *{
-    margin: 0;
+    /*Es conveniente configurar estos valores de inicio*/
+    margin: 0;  /* Eliminamos los márgenes de los navegadores*/
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.container{
-    display: flex;          /*El conjunto de estos 3 atributos centran el container*/
-    align-items: center;
-    justify-content: center;
-    width: 100%; /*para que ocupe todo el ancho de la página*/
-    height: 100vh;
-    background-color: var(--colorBackground);
+.container{    /*CONTIENE TODA LA PÁGINA*/
+    display: flex;              /** El conjunto de estos 3 atributos centran el container*/
+    align-items: center;        /*vertical*/
+    justify-content: center;    /*horizontal*/
+    /*-------------------------------*/
+    width: 100%;                      /*para que ocupe todo el ancho de la página*/
+    height: 100vh;                    /*               todo el alto de la página */    
+    /*--------------------------------*/
+    background-color:var(--colorBackground);
 }
 
-.form-content{
-    width:90%;
-    max-width: 450px;
+.form-content{ /*VENTANA DEL INTERIOR*/
+    max-width: 500px;       /*Establecemos un valor máximo de la ventana*/
+    padding: 30px 50px;             /*Padding (arriba y abajo) e (izq y dcha) */
+    border-radius: 25px;            /*Redondeamos las esquinas*/
     background-color: var(--colorBackgroundForm);
-    padding: 50px 60px;             /*arriba y abajo, izq y dcha*/
-    border-radius: 25px;
+    
 }
-.form-content h1{
-    font-size: 30px;
-    margin-bottom: 60px;
+h1{
     color: var(--colorTitle);
     text-align: center;
-
 }
-
-.input-field{
+.input-field{    /*ESPACIO DONDE SE ENCUENTRAN LOS CAMPOS*/
+    margin: 15px 0px;       /*Margen (arriba y abajo) e (izq y dcha) */
+    border-radius: 3px;     /*Redondeamos las esquinas*/
+    /*--------------------------------*/
+    display: flex;          /*Centramos los campos*/
+    align-items: center;    /**/
+    /*--------------------------------*/
     background-color:var(--colorBackground);
-    margin: 15px 0px;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    transition: max-height 0.5s; /*Hace una transición mostrando/ocultando los inputs */
-    overflow: hidden;/*desbordamiento: Que hará con el contenido si no cabe.
-                        Marcamos que lo oculte*/
 }
 input{
-    width:100%;
     background: transparent;
-    border:0;       /*No muestra los bordes*/
-    outline:none;   /*No muestra bordes exteriors del input activo*/
-    padding: 18px 15px;
+    border:0;                /*No muestra los bordes*/
+    padding: 18px 15px;      /*Padding (arriba y abajo) e (izq y dcha) */
     color: var(--colorLetters)
 }
 
-input::placeholder{
+input::placeholder{       /*INPUTS PLACEHOLDER*/
     color:var(--colorLetters)
 }
-.input-field i{
-    margin-left: 15px;
+
+.input-field i{             /*ICONOS*/
+    margin-left: 15px;      
     color:var(--colorIcons)
 }
 
-.btn-field{
-    width: 100%;
+.btn-field{ /*ZONA DE LOS BOTONES*/
+    margin: 25px 0px 0px 0px;       /*Margen arriba, dcha, abajo, izq.*/
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /*Posiciona los botones con un espacio de separación*/
 }
 
-.btn-field button{
-    flex-basis: 45%;
-    font-size: 16px;
+.btn-field button{   /*TODOS LOS BOTONES*/
+    flex-basis: 45%;        /*Especifica el tamaño inicial de un elemento flexible*/
+    font-size: 16px;        /*Fuente de la letra*/       
+    height: 40px;           /*Altura de los botones*/
+    border-radius: 10px;    /*Redondeamos las esquinas*/
     background-color: var(--colorIcons);
     color:var(--colorBackground);
-    
-    height: 40px;
-    border-radius: 10px;
-    border:0;   /**/
-    cursor:pointer;
-    transition: background-color 0.5s ease;
 }
 
-.input-group{
-    height: 220px;
 
-}
-.btn-field button.disable{
-    background-color: var(--colorBackground);
-    color:var(--colorLetters);
+.btn-field button.submit{   /*BOTÓN REGISTRO*/
+    background-color: whitesmoke;
+    color:black;
 }

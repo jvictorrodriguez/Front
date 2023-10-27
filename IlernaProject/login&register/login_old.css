@@ -103,4 +103,6 @@ input::placeholder{
 .btn-field button.disable{
     background-color: var(--colorBackground);
     color:var(--colorLetters);
+
+
 }

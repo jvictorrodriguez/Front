@@ -16,6 +16,7 @@
     --colorLetters: var(--color1);
     --colorTitle: var(--colorLetters);
     --colorIcons: var(--color11);
+    --colorError: var(--color3);
     
 }
 
@@ -43,18 +44,36 @@
     padding: 30px 50px;             /*Padding (arriba y abajo) e (izq y dcha) */
     border-radius: 25px;            /*Redondeamos las esquinas*/
     background-color: var(--colorBackgroundForm);
-    
+    display: flex;
+    flex-wrap: wrap;
 }
 h1{
+    margin-bottom: 50px;
     color: var(--colorTitle);
     text-align: center;
+    
 }
+.radio{
+    margin: 15px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-around  /*Posiciona los botones con un espacio de separación*/
+
+    
+}
+
+
+
 .input-field{    /*ESPACIO DONDE SE ENCUENTRAN LOS CAMPOS*/
     margin: 15px 0px;       /*Margen (arriba y abajo) e (izq y dcha) */
     border-radius: 3px;     /*Redondeamos las esquinas*/
     /*--------------------------------*/
     display: flex;          /*Centramos los campos*/
     align-items: center;    /**/
+    /*--------------------------------*/
+    transition: max-height 0.5s; /*Hace una transición mostrando/ocultando los inputs */
+    overflow: hidden;/*desbordamiento: Que hará con el contenido si no cabe.
+                        Marcamos que lo oculte*/
     /*--------------------------------*/
     background-color:var(--colorBackground);
 }
@@ -74,23 +93,38 @@ input::placeholder{       /*INPUTS PLACEHOLDER*/
     color:var(--colorIcons)
 }
 
+p{
+    color: var(--colorError);
+    text-align: center;
+}
 .btn-field{ /*ZONA DE LOS BOTONES*/
     margin: 25px 0px 0px 0px;       /*Margen arriba, dcha, abajo, izq.*/
+  
     display: flex;
-    justify-content: space-between; /*Posiciona los botones con un espacio de separación*/
+    flex-direction:column;
+   /*justify-content:flex-end; /*Posiciona los botones con un espacio de separación*/
 }
 
 .btn-field button{   /*TODOS LOS BOTONES*/
-    flex-basis: 45%;        /*Especifica el tamaño inicial de un elemento flexible*/
+
+    /*flex-basis: 45%;        /*Especifica el tamaño inicial de un elemento flexible*/
     font-size: 16px;        /*Fuente de la letra*/       
     height: 40px;           /*Altura de los botones*/
     border-radius: 10px;    /*Redondeamos las esquinas*/
     background-color: var(--colorIcons);
     color:var(--colorBackground);
+    margin-bottom: 10px;
+   
 }
 
 
-.btn-field button.submit{   /*BOTÓN REGISTRO*/
+.btn-field button.disable{
+    height: 0px;
+    border: none;
+    overflow: hidden;
+    background-color: var(--colorBackground);
+    color:var(--colorLetters);
+}
+.btn-field button.default{
     background-color: whitesmoke;
-    color:black;
 }

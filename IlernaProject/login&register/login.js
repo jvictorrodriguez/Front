@@ -1,72 +1,73 @@
+/*************** V A R I A B L E S ********************/
 
-
-$username = document.getElementById("username").value;
-$password = document.getElementById("password").value;
-
-
-let title = document.getElementById("title");
-let signUp = document.getElementById("signUp");
-let signIn = document.getElementById("signIn");
-let nameInput = document.getElementById("nameInput");
-let $name = document.getElementById("name");
+/*  Títulos */
+var $title = document.getElementById("title");
+/*Botones Radio*/
+let $radioLogin = document.getElementById("rlogin");
+let $radioRegister = document.getElementById("register");
+/*inputs cuadro de texto*/
+let $fullname = document.getElementById("fullname");
 let $username = document.getElementById("username");
 let $password = document.getElementById("password");
-let $mensaje = document.getElementById("error");
+/*p mensaje desde server al login*/
+let $mensaje = document.getElementById("mensaje");
+/*Botones*/
+let $borrar = document.getElementById("borrar");
+let $login = document.getElementById("login");
+let $registro = document.getElementById("registro");
 
-$name.addEventListener("click", () => {
-    if ($mensaje.length > 0) {
-        $name.innerHTML = "";
-    }
+/****************LISTENERS******************/
+
+$radioLogin.addEventListener("click", () => {
+    flogin();
+})
+
+$radioRegister.addEventListener("click", () => {
+    fregister();
+})
+
+$borrar.addEventListener("click", () => {
     $mensaje.innerHTML = "";
 })
 
-$username.addEventListener("click", () => {
-    $mensaje.innerHTML = "";
-})
-$password.addEventListener("click", () => {
-    $mensaje.innerHTML = "";
+$login.addEventListener("click", () => {
+    logInFunction(this.value)
 })
 
-
-signIn.addEventListener("click", () => {
-
-    const $username = document.getElementById("username").value;
-    if ($username.length != 0) {
-        logInFunction(this.value)
-    }
-    nameInput.style.maxHeight = "0px";
-    title.innerHTML = "Login";
-    signUp.classList.add("disable");
-    signIn.classList.remove("disable");
-})
-
-signUp.addEventListener("click", () => {
-    nameInput.style.maxHeight = "60px";
-    title.innerHTML = "Registro";
-
-    if ($mensaje.innerHTML.length > 0) {
-        alert($mensaje.innerHTML);
-        $name.value = "";
-        $username.value = "";
-        $password.value = "";
-
-    }
-    $mensaje.innerHTML = "";
-    signIn.classList.add("disable");
-    signUp.classList.remove("disable");
-    
+$registro.addEventListener("click", () => {
     sendFile();
 })
 
+/********************  FUNCIONES ********************/
+function reset() {
+    $fullname.value = "";
+    $username.value = "";
+    $password.value = "";
+    $mensaje.value = "";
+}
 
+function fregister() {
+    nameInput.style.maxHeight = "60px";
+    $title.innerHTML = $radioRegister.value;
+    $registro.classList.remove("disable");
+    $registro.classList.add("active");
+    $login.classList.add("disable");
+    $radioRegister.checked=true;
+}
 
+function flogin() {
+    nameInput.style.maxHeight = "0px";
+    $title.innerHTML = $radioLogin.value;
+    $registro.classList.add("disable");
+    $login.classList.remove("disable");
+    $login.classList.add("active");
+    $radioLogin.checked=true;
+}
 
-function logInFunction(valor) {
+function logInFunction() {
 
-    let username = $username.value;
-    let password = $password.value;
-    let auth = btoa(`${username}:${password}`);
-
+    let auth = btoa(`${$username.value}:${$password.value}`);
+    console.log("auth" + auth);
     var xhr = new XMLHttpRequest();
     var recibido = "";
 
@@ -79,53 +80,32 @@ function logInFunction(valor) {
         }
 
         if (this.status == 401) {
-            $mensaje.innerHTML = "Contraseña errónea";
+            $mensaje.innerHTML = "Correo y/o contraseña incorrectos";
         }
     }
-
-    xhr.open("GET", "http://localhost:8080/login", true);
+    xhr.open("POST", "http://localhost:8080/login", true);
     xhr.setRequestHeader("Authorization", "Basic " + `${auth}`);
     xhr.send();
-
-
 }
 
+/******************************************* */
 
+let sendFile = async () => {
 
-    let sendFile = async () => {
-
-        alert("FunctionRegistro")
-        let username = $username.value;
-        let password = $password.value;
-        let fullName = $name.value;
-    
-
-        const usuarioDto = {
-            fullname: fullName,
-            username: username,
-            password: password
-        }
-
-
-
-        console.log(JSON.stringify(usuarioDto));
-
-
-
-
-
-        const peticion = await fetch("http://localhost:8080/register",
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(usuarioDto)
-            });
-
-
-
+    const usuarioDto = {
+        fullname: $fullname.value,
+        username: $username.value,
+        password: $password.value
     }
+    console.log(JSON.stringify(usuarioDto));
 
-
+    const peticion = await fetch("http://localhost:8080/register",
+        {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuarioDto)
+        });
+}

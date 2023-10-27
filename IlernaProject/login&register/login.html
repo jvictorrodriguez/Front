@@ -1,37 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="login.css">
     <script defer src="login.js"></script>
     <title>Login</title>
 </head>
+
 <body>
     <div class="container">
         <div class="form-content">
-            <h1>Login</h1>
             <form>
-                <div class="input-group">
-                    <div class="input-field">
-                        <i class="material-symbols-outlined">Mail</i>
-                        <input type="email" id="username" placeholder="Correo" autocomplete="off">
-                    </div>
-                    <div class="input-field">
-                        <i class="material-symbols-outlined">Password</i>
-                        <input type="password" id="password" placeholder="Contraseña" >
+                <div>
+                    <h1 id="title">Registro</h1>
+                </div>
+
+                <div class="radio">
+                    <div>
+                        <input type="radio" id="rlogin" name="action" value="Login"  />
+                        <label for="rlogin">Login</label>
                     </div>
                     <div>
-                        <p id="error"></p>
+                        <input type="radio" id="register" name="action" value="Registro" checked />
+                        <label for="register">Registro</label>
+                    </div>
+                </div>
+                <div>
+                    <div class="input-group">
+                        <div class="input-field nameInput" id="nameInput">
+                            <i class="material-symbols-outlined">Person</i>
+                            <input type="text" id="fullname" placeholder="Nombre" autocomplete="off">
+                        </div>
+                        <div class="input-field">
+                            <i class="material-symbols-outlined">Mail</i>
+                            <input type="email" id="username" placeholder="Correo" autocomplete="off">
+                        </div>
+                        <div class="input-field">
+                            <i class="material-symbols-outlined">Password</i>
+                            <input type="password" id="password" placeholder="Contraseña">
+                        </div>
+                        <div>
+                            <p id="mensaje"></p>
+                        </div>
                     </div>
                 </div>
                 <div class="btn-field">
-                    <button id="borrar" class="" type="reset">Borrar</button>
-                    <button id="registro" class="submit" type="submit">Registro</button>
+                    <button id="borrar"     class="" type="reset">Borrar</button>
+                    <button id="login"      class="disable default" type="button">Login</button>
+                    <button id="registro"   class="default" type="button">Registro</button>
                 </div>
             </form>
         </div>
     </div>
 </body>
+
 </html>

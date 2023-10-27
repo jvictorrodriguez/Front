@@ -35,7 +35,10 @@ $login.addEventListener("click", () => {
 })
 
 $registro.addEventListener("click", () => {
-    sendFile();
+    prueba();
+    console.log("prueba");
+
+    //sendFile();
 })
 
 /********************  FUNCIONES ********************/
@@ -108,4 +111,52 @@ let sendFile = async () => {
             },
             body: JSON.stringify(usuarioDto)
         });
+}
+
+function prueba() {
+/*
+    let xhr2 = new XMLHttpRequest();
+    let recibido2 = "";
+
+    xhr2.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            recibido2 = xhr2.responseText;
+            if (recibido2.length > 0) {
+                $mensaje.innerHTML = recibido2;
+            }
+        }
+
+        if (this.status == 401) {
+            $mensaje.innerHTML = "401";
+        }
+    }
+    xhr2.open("POST", "http://localhost:8080/register", true);
+
+    xhr2.se
+    //xhr.setRequestHeader("Authorization", "Basic " + `${auth}`);
+    xhr2.send();*/
+
+    let xhr = new XMLHttpRequest();
+
+let json = JSON.stringify({
+    fullname: $fullname.value,
+    username: $username.value,
+    password: $password.value
+});
+
+xhr.open("POST", 'http://localhost:8080/register')
+xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+xhr.responseType = 'json';
+
+xhr.send(json);
+
+
+
+xhr.onload = function() {
+    let responseObj = xhr.response;
+    alert(responseObj.message); // Hola, Mundo!
+    console.log(xhr.response);
+    //$mensaje.innerHTML = xhr.response;
+    $mensaje.innerHTML=(JSON.stringify(xhr.response));
+  };
 }

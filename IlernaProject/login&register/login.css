@@ -93,6 +93,12 @@ input::placeholder{       /*INPUTS PLACEHOLDER*/
     color:var(--colorIcons)
 }
 
+.invalid{
+    border-color: solid 2px red ;
+    box-shadow: red;
+    background-color: red;
+    color:white;
+}
 p{
     color: var(--colorError);
     text-align: center;

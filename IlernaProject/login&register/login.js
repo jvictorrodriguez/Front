@@ -20,42 +20,69 @@ let $registro = document.getElementById("registro");
 
 $radioLogin.addEventListener("click", () => {
     flogin();
+    
 })
 
 $radioRegister.addEventListener("click", () => {
     fregister();
+    
 })
 
 $borrar.addEventListener("click", () => {
-    $mensaje.innerHTML = "";
+    reset();
 })
 
 $login.addEventListener("click", () => {
-    logInFunction(this.value)
+    logInFunction();
 })
 
 $registro.addEventListener("click", () => {
-    prueba();
-    console.log("prueba");
-
-    //sendFile();
+    registroFunction();
 })
+
+$fullname.addEventListener("blur", (e)=> validarCamposVacios(e));
+$username.addEventListener("blur", (e)=> validarCamposVacios(e));
+$password.addEventListener("blur", (e)=> validarCamposVacios(e));
+
+$fullname.addEventListener("focus", (e)=> focus(e));
+$username.addEventListener("focus", (e)=> focus(e));
+$password.addEventListener("focus", (e)=> focus(e));
+
+
 
 /********************  FUNCIONES ********************/
 function reset() {
     $fullname.value = "";
     $username.value = "";
     $password.value = "";
-    $mensaje.value = "";
+    $mensaje.innerHTML = "";
+
 }
 
+function validarCamposVacios(e){
+    const field=e.target;
+    const value= field.value;
+    if(value.trim().length==0){
+       field.classList.add("invalid");
+    }else{
+        field.classList.remove("invalid");
+    }
+}
+
+function focus(e){
+    const field=e.target;
+    const value= field.value;
+    field.classList.remove("invalid");
+}
 function fregister() {
+    reset();
     nameInput.style.maxHeight = "60px";
     $title.innerHTML = $radioRegister.value;
     $registro.classList.remove("disable");
     $registro.classList.add("active");
     $login.classList.add("disable");
-    $radioRegister.checked=true;
+    $radioRegister.checked = true;
+    
 }
 
 function flogin() {
@@ -64,99 +91,58 @@ function flogin() {
     $registro.classList.add("disable");
     $login.classList.remove("disable");
     $login.classList.add("active");
-    $radioLogin.checked=true;
+    $radioLogin.checked = true;
 }
 
 function logInFunction() {
 
     let auth = btoa(`${$username.value}:${$password.value}`);
     console.log("auth" + auth);
-    var xhr = new XMLHttpRequest();
-    var recibido = "";
 
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            recibido = xhr.responseText;
-            if (recibido.length > 0) {
-                $mensaje.innerHTML = recibido;
-            }
-        }
-
-        if (this.status == 401) {
-            $mensaje.innerHTML = "Correo y/o contraseña incorrectos";
-        }
-    }
-    xhr.open("POST", "http://localhost:8080/login", true);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", 'http://localhost:8080/login', true)
     xhr.setRequestHeader("Authorization", "Basic " + `${auth}`);
     xhr.send();
+
+    xhr.onload = function () {
+        if (xhr.status == 200) {
+            $mensaje.innerHTML = "Login Correcto";
+
+        }
+        else {
+            //$mensaje.innerHTML = xhr.status;
+            $mensaje.innerHTML = "Usuario y/o Contraseña Incorrecta";
+        }
+    };
 }
 
-/******************************************* */
 
-let sendFile = async () => {
+function registroFunction() {
+    let xhr = new XMLHttpRequest();
 
-    const usuarioDto = {
+    let json = JSON.stringify({
         fullname: $fullname.value,
         username: $username.value,
         password: $password.value
-    }
-    console.log(JSON.stringify(usuarioDto));
+    });
 
-    const peticion = await fetch("http://localhost:8080/register",
-        {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(usuarioDto)
-        });
-}
+    xhr.open("POST", 'http://localhost:8080/register',true)
+    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhr.responseType = 'json';
+    xhr.send(json);
 
-function prueba() {
-/*
-    let xhr2 = new XMLHttpRequest();
-    let recibido2 = "";
 
-    xhr2.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            recibido2 = xhr2.responseText;
-            if (recibido2.length > 0) {
-                $mensaje.innerHTML = recibido2;
-            }
+
+    xhr.onload = function () {
+        if (xhr.status == 200) {
+            $mensaje.innerHTML = "Usuario creado correctamente";
+            sessionStorage.setItem("user", json);
+            console.log("json:" + json);
+            console.log("get session "+ sessionStorage.getItem("user"));
         }
-
-        if (this.status == 401) {
-            $mensaje.innerHTML = "401";
+        else {
+            $mensaje.innerHTML = xhr.status;
+            $mensaje.innerHTML = "Error creando al usuario";
         }
-    }
-    xhr2.open("POST", "http://localhost:8080/register", true);
-
-    xhr2.se
-    //xhr.setRequestHeader("Authorization", "Basic " + `${auth}`);
-    xhr2.send();*/
-
-    let xhr = new XMLHttpRequest();
-
-let json = JSON.stringify({
-    fullname: $fullname.value,
-    username: $username.value,
-    password: $password.value
-});
-
-xhr.open("POST", 'http://localhost:8080/register')
-xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-xhr.responseType = 'json';
-
-xhr.send(json);
-
-
-
-xhr.onload = function() {
-    let responseObj = xhr.response;
-    alert(responseObj.message); // Hola, Mundo!
-    console.log(xhr.response);
-    //$mensaje.innerHTML = xhr.response;
-    $mensaje.innerHTML=(JSON.stringify(xhr.response));
-  };
+    };
 }

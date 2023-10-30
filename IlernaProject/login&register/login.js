@@ -107,7 +107,9 @@ function logInFunction() {
     xhr.onload = function () {
         if (xhr.status == 200) {
             $mensaje.innerHTML = "Login Correcto";
-
+            sessionStorage.setItem("user", auth);
+         
+            console.log("get session "+ sessionStorage.getItem("user"));
         }
         else {
             //$mensaje.innerHTML = xhr.status;
@@ -136,9 +138,7 @@ function registroFunction() {
     xhr.onload = function () {
         if (xhr.status == 200) {
             $mensaje.innerHTML = "Usuario creado correctamente";
-            sessionStorage.setItem("user", json);
-            console.log("json:" + json);
-            console.log("get session "+ sessionStorage.getItem("user"));
+           
         }
         else {
             $mensaje.innerHTML = xhr.status;

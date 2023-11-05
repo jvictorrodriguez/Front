@@ -64,6 +64,7 @@ function borrarRegistro(id){
     //xhr.responseType = 'json';
     xhr.send();
 }
+
 function editarPersona(id){
 
 }

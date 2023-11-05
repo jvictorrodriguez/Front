@@ -33,7 +33,8 @@ $borrar.addEventListener("click", () => {
 })
 
 $login.addEventListener("click", () => {
-    logInFunction();
+    //logInFunction();
+    logInJwt()
 })
 
 $registro.addEventListener("click", () => {
@@ -143,6 +144,45 @@ function registroFunction() {
         else {
             $mensaje.innerHTML = xhr.status;
             $mensaje.innerHTML = "Error creando al usuario";
+        }
+    };
+}
+
+
+
+function logInJwt() {
+
+    
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", 'http://localhost:8080/api/auth/signin', true);
+    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    let json = JSON.stringify({
+        //fullname: $fullname.value,
+        //username: $username.value,
+        //password: $password.value
+        username: "viffc",
+        password: "1234567"
+    });
+
+
+
+
+    xhr.send(json);
+
+    xhr.onload = function () {
+        if (xhr.status == 200) {
+            $mensaje.innerHTML = "Login Correcto";
+           let response = xhr.responseJSON; 
+           console.log(response);
+           console.log(JSON.stringify(response));
+            
+            console.log(response.accessToken);
+           
+        }
+        else {
+            //$mensaje.innerHTML = xhr.status;
+            $mensaje.innerHTML = "Usuario y/o Contraseña Incorrecta";
         }
     };
 }

@@ -35,7 +35,7 @@ const peticion= await fetch("http://localhost:9090/events/create",
                 'Accept': 'application/json',
                 'Content-Type': 'image/png'
             },
-            body:        
+            body:     JSON.stringify(eventDto)   
         });
 
 

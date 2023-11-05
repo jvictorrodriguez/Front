@@ -1,0 +1,136 @@
+:root {
+    --color1: #FFBE0B;
+    --color2:#FB5607;
+    --color3:#FF006E;
+    --color4:#8338EC;
+    --color5: #3a86ff;
+    --color6: grey;
+    --color11: #E63946;
+    --color12: #F1FAEE;
+    --color13: #A8DADC;
+    --color14: #457B9D;
+    --color15: #1d3557;
+
+    --colorBackground: var(--color15);
+    --colorBackgroundForm: var(--color14);
+    --colorLetters: var(--color1);
+    --colorTitle: var(--colorLetters);
+    --colorIcons: var(--color11);
+    --colorError: var(--color3);
+    
+}
+
+*{
+    /*Es conveniente configurar estos valores de inicio*/
+    margin: 0;  /* Eliminamos los márgenes de los navegadores*/
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container{    /*CONTIENE TODA LA PÁGINA*/
+    display: flex;              /** El conjunto de estos 3 atributos centran el container*/
+    align-items: center;        /*vertical*/
+    justify-content: center;    /*horizontal*/
+    /*-------------------------------*/
+    width: 100%;                      /*para que ocupe todo el ancho de la página*/
+    height: 100vh;                    /*               todo el alto de la página */    
+    /*--------------------------------*/
+    background-color:var(--colorBackground);
+}
+
+.form-content{ /*VENTANA DEL INTERIOR*/
+    max-width: 500px;       /*Establecemos un valor máximo de la ventana*/
+    padding: 30px 50px;             /*Padding (arriba y abajo) e (izq y dcha) */
+    border-radius: 25px;            /*Redondeamos las esquinas*/
+    background-color: var(--colorBackgroundForm);
+    display: flex;
+    flex-wrap: wrap;
+}
+h1{
+    margin-bottom: 50px;
+    color: var(--colorTitle);
+    text-align: center;
+    
+}
+.radio{
+    margin: 15px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-around  /*Posiciona los botones con un espacio de separación*/
+
+    
+}
+
+
+
+.input-field{    /*ESPACIO DONDE SE ENCUENTRAN LOS CAMPOS*/
+    margin: 15px 0px;       /*Margen (arriba y abajo) e (izq y dcha) */
+    border-radius: 3px;     /*Redondeamos las esquinas*/
+    /*--------------------------------*/
+    display: flex;          /*Centramos los campos*/
+    align-items: center;    /**/
+    /*--------------------------------*/
+    transition: max-height 0.5s; /*Hace una transición mostrando/ocultando los inputs */
+    overflow: hidden;/*desbordamiento: Que hará con el contenido si no cabe.
+                        Marcamos que lo oculte*/
+    /*--------------------------------*/
+    background-color:var(--colorBackground);
+}
+input{
+    background: transparent;
+    border:0;                /*No muestra los bordes*/
+    padding: 18px 15px;      /*Padding (arriba y abajo) e (izq y dcha) */
+    color: var(--colorLetters)
+}
+
+input::placeholder{       /*INPUTS PLACEHOLDER*/
+    color:var(--colorLetters)
+}
+
+.input-field i{             /*ICONOS*/
+    margin-left: 15px;      
+    color:var(--colorIcons)
+}
+
+.invalid{
+    border-color: solid 2px red ;
+    box-shadow: red;
+    background-color: red;
+    color:white;
+}
+p{
+    color: var(--colorError);
+    text-align: center;
+}
+.btn-field{ /*ZONA DE LOS BOTONES*/
+    margin: 25px 0px 0px 0px;       /*Margen arriba, dcha, abajo, izq.*/
+  
+    display: flex;
+    flex-direction:column;
+   /*justify-content:flex-end; /*Posiciona los botones con un espacio de separación*/
+}
+
+.btn-field button{   /*TODOS LOS BOTONES*/
+
+    /*flex-basis: 45%;        /*Especifica el tamaño inicial de un elemento flexible*/
+    font-size: 16px;        /*Fuente de la letra*/       
+    height: 40px;           /*Altura de los botones*/
+    border-radius: 10px;    /*Redondeamos las esquinas*/
+    background-color: var(--colorIcons);
+    color:var(--colorBackground);
+    margin-bottom: 10px;
+   
+}
+
+
+.btn-field button.disable{
+    height: 0px;
+    border: none;
+    overflow: hidden;
+    background-color: var(--colorBackground);
+    color:var(--colorLetters);
+}
+.btn-field button.default{
+    background-color: whitesmoke;
+}

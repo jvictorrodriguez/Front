@@ -6,8 +6,8 @@ var $title = document.getElementById("title");
 let $radioLogin = document.getElementById("rlogin");
 let $radioRegister = document.getElementById("register");
 /*inputs cuadro de texto*/
-let $fullname = document.getElementById("fullname");
 let $username = document.getElementById("username");
+let $email = document.getElementById("email");
 let $password = document.getElementById("password");
 /*p mensaje desde server al login*/
 let $mensaje = document.getElementById("mensaje");
@@ -20,12 +20,10 @@ let $registro = document.getElementById("registro");
 
 $radioLogin.addEventListener("click", () => {
     flogin();
-    
 })
 
 $radioRegister.addEventListener("click", () => {
     fregister();
-    
 })
 
 $borrar.addEventListener("click", () => {
@@ -33,30 +31,30 @@ $borrar.addEventListener("click", () => {
 })
 
 $login.addEventListener("click", () => {
-    logInFunction();
+    //logInFunction();
+    logInJwt()
 })
 
 $registro.addEventListener("click", () => {
     registroFunction();
 })
 
-$fullname.addEventListener("blur", (e)=> validarCamposVacios(e));
 $username.addEventListener("blur", (e)=> validarCamposVacios(e));
+$email.addEventListener("blur", (e)=> validarCamposVacios(e));
 $password.addEventListener("blur", (e)=> validarCamposVacios(e));
 
-$fullname.addEventListener("focus", (e)=> focus(e));
 $username.addEventListener("focus", (e)=> focus(e));
+$email.addEventListener("focus", (e)=> focus(e));
 $password.addEventListener("focus", (e)=> focus(e));
 
 
 
 /********************  FUNCIONES ********************/
 function reset() {
-    $fullname.value = "";
     $username.value = "";
+    $email.value = "";
     $password.value = "";
     $mensaje.innerHTML = "";
-
 }
 
 function validarCamposVacios(e){
@@ -76,7 +74,7 @@ function focus(e){
 }
 function fregister() {
     reset();
-    nameInput.style.maxHeight = "60px";
+    $email.style.maxHeight = "60px";
     $title.innerHTML = $radioRegister.value;
     $registro.classList.remove("disable");
     $registro.classList.add("active");
@@ -86,7 +84,7 @@ function fregister() {
 }
 
 function flogin() {
-    nameInput.style.maxHeight = "0px";
+    $email.style.maxHeight = "0px";
     $title.innerHTML = $radioLogin.value;
     $registro.classList.add("disable");
     $login.classList.remove("disable");
@@ -107,7 +105,9 @@ function logInFunction() {
     xhr.onload = function () {
         if (xhr.status == 200) {
             $mensaje.innerHTML = "Login Correcto";
-
+            sessionStorage.setItem("user", auth);
+         
+            console.log("get session "+ sessionStorage.getItem("user"));
         }
         else {
             //$mensaje.innerHTML = xhr.status;
@@ -121,12 +121,12 @@ function registroFunction() {
     let xhr = new XMLHttpRequest();
 
     let json = JSON.stringify({
-        fullname: $fullname.value,
         username: $username.value,
+        email: $email.value,
         password: $password.value
     });
 
-    xhr.open("POST", 'http://localhost:8080/register',true)
+    xhr.open("POST", 'http://localhost:9090/api/auth/signup',true)
     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhr.responseType = 'json';
     xhr.send(json);
@@ -137,13 +137,48 @@ function registroFunction() {
     xhr.onload = function () {
         if (xhr.status == 200) {
             $mensaje.innerHTML = "Usuario creado correctamente";
-            sessionStorage.setItem("user", json);
-            console.log("json:" + json);
-            console.log("get session "+ sessionStorage.getItem("user"));
+           
         }
         else {
             $mensaje.innerHTML = xhr.status;
             $mensaje.innerHTML = "Error creando al usuario";
+        }
+    };
+}
+
+
+
+function logInJwt() {
+
+    
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", 'http://localhost:8080/api/auth/signin', true);
+    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    let json = JSON.stringify({
+        username: $username.value,
+        email: $fullname.value,
+        password: $password.value
+    });
+
+
+
+
+    xhr.send(json);
+
+    xhr.onload = function () {
+        if (xhr.status == 200) {
+            $mensaje.innerHTML = "Login Correcto";
+           let response = xhr.responseJSON; 
+           console.log(response);
+           console.log(JSON.stringify(response));
+            
+            console.log(response.accessToken);
+           
+        }
+        else {
+            //$mensaje.innerHTML = xhr.status;
+            $mensaje.innerHTML = "Usuario y/o Contraseña Incorrecta";
         }
     };
 }

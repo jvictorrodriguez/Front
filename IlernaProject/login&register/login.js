@@ -130,6 +130,7 @@ function registroFunction() {
     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhr.responseType = 'json';
     xhr.send(json);
+    console.log(json);
 
 
 

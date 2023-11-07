@@ -1,5 +1,5 @@
 /*************** V A R I A B L E S ********************/
-
+ token="";
 /*  Títulos */
 var $title = document.getElementById("title");
 /*Botones Radio*/
@@ -74,7 +74,7 @@ function focus(e){
 
 function fregister() {
     reset();
-    mailbox.style.maxHeight = "160px";
+    mailbox.style.maxHeight = "60px";
     $title.innerHTML = $radioRegister.value;
     $registro.classList.remove("disable");
     $registro.classList.add("active");
@@ -112,82 +112,25 @@ function registroFunction() {
     
     fetch(apiUrl, requestOptions)
       .then(response => {
-        if (!response.ok) {
+        /*if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+        */
         return response.json();
       })
       .then(data => {
         $mensaje.textContent = JSON.stringify(data.message, null, 2);
       })
       .catch(error => {
-        console.error ('Error:', error);
+       // console.error ('Error:', error);
+       $mensaje.textContent = JSON.stringify(data.message, null, 2);
+       console.log("error");
       });
-
-    /*
-    let xhr = new XMLHttpRequest();
-
-    let json = JSON.stringify({
-        username: $username.value,
-        email: $email.value,
-        password: $password.value
-    });
-
-    xhr.open("POST", 'http://localhost:9090/api/auth/signup',true)
-    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    xhr.responseType = 'json';
-    xhr.send(json);
-    console.log(json);
-
-
-
-    xhr.onload = function () {
-        let response = xhr.responseJSON; 
-        if (xhr.status == 200) {
-            //$mensaje.innerHTML = "Usuario creado correctamente";
-            $mensaje.innerHTML= response.message;
-           
-        }
-        else {
-            $mensaje.innerHTML = xhr.status;
-           // $mensaje.innerHTML = "Error creando al usuario";
-        }
-    };
-    */
 }
 
 
 
 function logInJwt() {
-/*
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", 'http://localhost:9090/api/auth/signin', true);
-    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    let json = JSON.stringify({
-        username: $username.value,
-        password: $password.value
-    });
-
-    xhr.send(json);
-    console.log(json);
-
-    xhr.onload = function () {
-        if (xhr.status == 200) {
-            $mensaje.innerHTML = "Login Correcto";
-           let response = xhr.responseJSON; 
-           console.log(response);
-           console.log(JSON.stringify(response));
-            
-            console.log(response.accessToken);
-           
-        }
-        else {
-            //$mensaje.innerHTML = xhr.status;
-            $mensaje.innerHTML = "Usuario y/o Contraseña Incorrecta";
-        }
-    };
-
-*/
 
     const apiUrl = 'http://localhost:9090/api/auth/signin';
     const data = {
@@ -211,21 +154,13 @@ function logInJwt() {
         return response.json();
       })
       .then(data => {
-        $mensaje.textContent = JSON.stringify(data, null, 2);
-      })
-      .catch(error => {
-        console.error ('Error:', error);
-      });
+        $mensaje.textContent = JSON.stringify(data.id, null, 2);
+        token=data.accessToken;
+        window.open("../Eventos/eventos.html")
 
-
-
-
-
-
-
-
-
-
-
-
+        
+        })
+        .catch(err => {
+          console.error('Error recibido en la solicitud:', err);
+        });
 }

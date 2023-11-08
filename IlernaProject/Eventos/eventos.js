@@ -28,8 +28,6 @@ let listarEventos = async () => {
                 let contenidoFila = `<tr>
                 <td>${evento.id}</td>
                 <td>${evento.description}</td>
-                <td>${evento.status}</td>
-                <td>${evento.creator}</td>
                 <td>${evento.date}</td>
                 <td>${evento.place}</td>
                 <td>${evento.price}</td>

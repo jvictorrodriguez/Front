@@ -1,22 +1,17 @@
 /*************** V A R I A B L E S ********************/
-let jwtoken="";
-
+let jwtoken = "";
 
 
 window.onload = function () {
         listarEventos();
-    
 }
-
-
 
 
 let listarEventos = async () => {
 
-        
         jwtoken = readCookie("token");
 
-        const peticion = await fetch("http://localhost:9090/event/all",
+        const peticion = await fetch("http://localhost:9090/event/allByUser",
                 {
                         method: "GET",
                         headers: {
@@ -31,16 +26,19 @@ let listarEventos = async () => {
 
         for (let evento of eventos) {
                 let contenidoFila = `<tr>
-            <td>${evento.description}</td>
-            <td>${evento.place}</td>
-            <td>${evento.price}</td>
+                <td>${evento.id}</td>
+                <td>${evento.description}</td>
+                <td>${evento.status}</td>
+                <td>${evento.creator}</td>
+                <td>${evento.date}</td>
+                <td>${evento.place}</td>
+                <td>${evento.price}</td>
             </tr>
-            `
+            `;
                 contenidoTabla += contenidoFila;
         }
-        console.log("Hemos llegado hasta aquí");
-        document.querySelector("#tabla tbody").outerHTML = contenidoTabla;
 
+        document.querySelector("#tabla tbody").outerHTML = contenidoTabla;
 }
 
 

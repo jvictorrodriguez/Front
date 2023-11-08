@@ -156,7 +156,12 @@ function logInJwt() {
       .then(data => {
         $mensaje.textContent = JSON.stringify(data.id, null, 2);
         token=data.accessToken;
-        window.open("../Eventos/eventos.html")
+        
+        
+        document.cookie = "token="+token;
+       
+      
+        window.open("./Eventos/eventos.html")
 
         
         })

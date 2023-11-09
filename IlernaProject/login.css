@@ -57,9 +57,7 @@ h1{
     margin: 15px 0px;
     display: flex;
     flex-wrap: wrap;
-    justify-content:space-around  /*Posiciona los botones con un espacio de separación*/
-
-    
+    justify-content:space-around  /*Posiciona los botones con un espacio de separación*/   
 }
 
 
@@ -105,7 +103,6 @@ p{
 }
 .btn-field{ /*ZONA DE LOS BOTONES*/
     margin: 25px 0px 0px 0px;       /*Margen arriba, dcha, abajo, izq.*/
-  
     display: flex;
     flex-direction:column;
    /*justify-content:flex-end; /*Posiciona los botones con un espacio de separación*/

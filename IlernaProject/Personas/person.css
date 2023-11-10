@@ -73,7 +73,7 @@
 
   form{    /*CONTIENE TODA LA PÁGINA*/
     display: flex;              /** El conjunto de estos 3 atributos centran el container*/
-    align-items: center;        /*vertical*/
+    /*align-items: center;        /*vertical*/
     justify-content: center;    /*horizontal*/
     /*-------------------------------*/
     width: 100%;                      /*para que ocupe todo el ancho de la página*/
@@ -89,3 +89,7 @@
   display: flex;
   flex-wrap: wrap;
 }
+.hidden{
+  visibility: hidden;
+}
+

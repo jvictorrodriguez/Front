@@ -39,7 +39,7 @@
     background-color:var(--colorBackground);
 }
 
-.form-content{ /*VENTANA DEL INTERIOR*/
+.input-group    { /*VENTANA DEL INTERIOR*/
     max-width: 500px;       /*Establecemos un valor máximo de la ventana*/
     padding: 30px 50px;             /*Padding (arriba y abajo) e (izq y dcha) */
     border-radius: 25px;            /*Redondeamos las esquinas*/

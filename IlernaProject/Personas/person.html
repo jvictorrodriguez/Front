@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,25 +11,30 @@
     <script defer src="person.js"></script>
     <title>Person</title>
     <h1>Personas</h1>
-    
+
 </head>
+
 <body>
     <table id="tabla">
         <thead>
             <tr>
-                <td>#</td><td>Nombre</td> <td>Fecha de Nacimiento</td><td>Edad</td><td>Acciones</td>
+                <td>#</td>
+                <td>Nombre</td>
+                <td>Fecha de Nacimiento</td>
+                <td>Edad</td>
+                <td>Acciones</td>
             </tr>
         </thead>
         <tbody id="tabla">
-<!--<i id="borrar">b</i>-->
+            <!--<i id="borrar">b</i>-->
         </tbody>
     </table>
 
 
     <h3 id="tituloOpcion">Añadir</h3>
     <form>
-        
-            <div class="input-group">
+
+        <div class="input-group">
             <div class="input-field">
                 <i class="material-symbols-outlined">Person</i>
                 <input type="text" id="name" placeholder="Nombre" autocomplete="off">
@@ -36,18 +42,19 @@
             </div>
             <div class="input" id="calendar">
                 <i class="material-symbols-outlined"><span class="material-symbols-outlined">
-                    calendar_month
+                        calendar_month
                     </span></i>
-                <input type="date" id="dob"  autocomplete="off">
+                <input type="date" id="dob" autocomplete="off">
                 <span></span>
             </div>
             <div class="btn-field">
-                <button id="borrar"     class=""        type="reset">Borrar</button>
-                <button id="enviar"     class="" type="submit">Enviar</button>
-                <button id="modificar"  class="hidden" type="button">Modificar</button>
+                <button id="borrar" class="" type="reset">Borrar</button>
+                <button id="enviar" class="" type="submit">Enviar</button>
+                <button id="modificar" class="hidden" type="button">Modificar</button>
             </div>
         </div>
-
+    </form>
 
 </body>
+
 </html>

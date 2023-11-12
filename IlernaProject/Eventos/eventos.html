@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="eventos.js"></script>
+    <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="tabla.css">
-    <title>Document</title>
+    <title>Eventos</title>
 </head>
 <body>
     <h1>Eventos</h1>
@@ -24,5 +26,37 @@
 
             </tbody>
     </table>
+
+
+    <h3 id="tituloOpcion">Añadir</h3>
+    <form>
+
+        <div class="input-group">
+            <div class="input-field">
+                <i class="material-symbols-outlined">description</i>
+                <input type="text" id="description" placeholder="Descripción" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <i class="material-symbols-outlined">calendar_month</i>
+                <input type="date" id="calendar" autocomplete="off">
+                <p id="fechas"></p>
+                <button type="button" id="addDate">Añadir</button>
+            </div>
+            <div class="input-field">
+                <i class="material-symbols-outlined">place</i>
+                <input type="text" id="place" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <i class="material-symbols-outlined">Euro</i>
+                <input type="text" id="price" autocomplete="off">
+            </div>
+
+            <div class="btn-field">
+                <button id="borrar" class="" type="reset">Borrar</button>
+                <button id="enviar" class="" type="button">Enviar</button>
+                <button id="modificar" class="hidden" type="button">Modificar</button>
+            </div>
+        </div>
+    </form>
 </body>
 </html>

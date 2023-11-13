@@ -71,3 +71,24 @@
   .delete:hover {
     color: #dc2a2a;
   }
+  form{    /*CONTIENE TODA LA PÁGINA*/
+    display: flex;              /** El conjunto de estos 3 atributos centran el container*/
+    /*align-items: center;        /*vertical*/
+    justify-content: center;    /*horizontal*/
+    /*-------------------------------*/
+    width: 100%;                      /*para que ocupe todo el ancho de la página*/
+    height: 100vh;                    /*               todo el alto de la página */    
+    /*--------------------------------*/
+    background-color:var(--colorBackground);
+}
+.form-content{ /*VENTANA DEL INTERIOR*/
+  max-width: 500px;       /*Establecemos un valor máximo de la ventana*/
+  padding: 30px 50px;             /*Padding (arriba y abajo) e (izq y dcha) */
+  border-radius: 25px;            /*Redondeamos las esquinas*/
+  background-color: var(--colorBackgroundForm);
+  display: flex;
+  flex-wrap: wrap;
+}
+.hidden{
+  visibility: hidden;
+}

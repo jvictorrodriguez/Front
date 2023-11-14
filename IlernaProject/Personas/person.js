@@ -1,17 +1,25 @@
 /*************** V A R I A B L E S ********************/
-let host = "http://localhost:9090";
-let jwtoken = "";
-let idRegistro;
+//let host = "http://localhost:9090";
+//let jwtoken = "";
+//let idRegistro;
 
-let $tabla = document.getElementById("tabla");
-let $enviar = document.getElementById("enviar");
+
+
+/********VARIABLES  PERSONAS ************* */
+//let $tbodyPersonas=document.getElementById("tbodyPersonas"); DECLARADO EN EVENTOS.JS
+let tituloOpcionPersonas= document.getElementById("tituloOpcionPersonas");
+let arrayPersonas;
+let arrayViajerosDTO=[];
+
+/* FORMULARIO */
 let $tituloOpcion = document.getElementById("tituloOpcion");
-let $modificar = document.getElementById("modificar");
 
+let $name = document.getElementById("name");                        //DTO
+let $dob = document.getElementById("dob");                          //DTO
 
-/*************** variables del DTO a enviar ***************/
-let $name = document.getElementById("name");
-let $dob = document.getElementById("dob");
+let $enviarPersona = document.getElementById("enviarPersona");      //botón
+let $modificarPersona = document.getElementById("modificarPersona");//botón
+
 
 
 
@@ -24,12 +32,12 @@ window.addEventListener('load', function () {
   obtenerLista();
 });
 
-$enviar.addEventListener("click", () => {
+$enviarPersona.addEventListener("click", () => {
   altaPersona();
 })
 
-$modificar.addEventListener("click",()=>{
-  guardarCambios(idRegistro);
+$modificarPersona.addEventListener("click",()=>{
+  guardarCambiosPersona(idRegistro);
 })
 
 
@@ -50,35 +58,40 @@ let obtenerLista = async () => {
     });
 
   const personas = await peticion.json();
-  mostrarRegistros(personas);
+  arrayPersonas=personas;
+  mostrarRegistrosPersonas(personas);
   
 }
 
 /******************* MOSTRAR TABLA ***************** */
-function mostrarRegistros(personas) {
+function mostrarRegistrosPersonas(personas) {
   let contenidoTabla = "";
 
-  for (let persona of personas) {
-    let contenidoFila = `<tr>
-                  <td>${persona.id}</td>
-                  <td>${persona.name}</td>
-                  <td>${persona.dob}</td>
-                  <td>${persona.age}</td>
-                  <td>
-  
-                  <i onClick="obtenerRegistro(${persona.id})" class="material-symbols-outlined">Edit</i>
-                  <i onClick="borrarRegistro(${persona.id})"class="material-symbols-outlined">Delete</i>
-                  </td>
-              </tr>
-              `;
+  for(var i=0; i < arrayPersonas.length; i++) {
+    let contenidoFila = 
+    `<tr>
+      <td>${arrayPersonas[i].id}</td>
+      <td>${arrayPersonas[i].name}</td>
+      <td>${arrayPersonas[i].dob}</td>
+      <td>${arrayPersonas[i].age}</td>
+      <td>
+        <i onClick="obtenerUnRegistroPersona(${arrayPersonas[i].id})" class="material-symbols-outlined">Edit</i> 
+        <i onClick="borrarRegistroPersona(${arrayPersonas[i].id})" class="material-symbols-outlined">Delete</i>
+      </td>
+      <td>
+          <input type="checkbox" name="companions" value="${i}"
+          onClick="incluirPersonaAEvento()">
+      </td>
+    </tr>
+`;
+
     contenidoTabla += contenidoFila;
   }
-  document.querySelector("#tabla tbody").outerHTML = contenidoTabla;
+$tbodyPersonas.innerHTML = contenidoTabla;
 }
 
 /*********** GET DEL REGISTRO *** OBTENER UN ÚNICO  REGISTRO*****************/
-let obtenerRegistro = async (id)=> {
-  jwtoken = readCookie("token");
+let obtenerUnRegistroPersona = async (id)=> {
   idRegistro=id;
 
   const peticion = await fetch(host+"/person/"+id,
@@ -97,15 +110,13 @@ let obtenerRegistro = async (id)=> {
     $dob.value= persona.dob;
 
 //Cambiar botones
-$modificar.classList.toggle("hidden");
-$enviar.classList.toggle("hidden");
+$modificarPersona.classList.toggle("hidden");
+$enviarPersona.classList.toggle("hidden");
 
 }
 
 /************** BORRAR REGISTRO *******************/ 
-let borrarRegistro = async (id) => {
-
-  jwtoken = readCookie("token");
+let borrarRegistroPersona = async (id) => {
 
   const peticion = await fetch(host + "/person/"+id,
     {
@@ -115,77 +126,90 @@ let borrarRegistro = async (id) => {
         "Authorization": "Bearer " + jwtoken
       }
     });
-//obtenerLista();
+obtenerLista();
 }
 
 /********************** EDITAR REGISTRO ******************/
-let guardarCambios = async (id) => {
+function guardarCambiosPersona(id) {
 
-jwtoken = readCookie("token");
- let registro={};
-    registro.name= $name.value;
-    registro.dob = $dob.value;
- 
+  let ruta = host + "/person/"+id;
 
+  const json = {
+      name: $name.value,
+      dob: $dob.value
+  };
 
-  const peticion = await fetch(host + "/person/"+id,
-    {
-      method: "PATCH",
-      headers: {
-        "Accept": "application/json",
-        "Authorization": "Bearer " + jwtoken
-      },
-      body: JSON.stringify(registro)
-    });
-//Cambiar botones
-$modificar.classList.toggle("hidden");
-$enviar.classList.toggle("hidden");
-//borrar campos
-$name.value="";
-$dob.value="";
+  let xhr = new XMLHttpRequest();
+  xhr.open("PUT", ruta, true);
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
+  xhr.send(JSON.stringify(json))
 
-obtenerLista();
-  
+  xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+                  let registro = JSON.parse(this.responseText);
+                  obtenerLista();
+                  cambiarBotonesPersona();
+                  borrarCamposPersona();
+          }
+  }
 }
+
+function cambiarBotonesPersona(){
+  $modificarPersona.classList.toggle("hidden");
+  $enviarPersona.classList.toggle("hidden");
+}
+function borrarCamposPersona(){
+  $name.value="";
+  $dob.value="";
+}
+
 
 /******************** ALTA REGISTRO *************** */
-function altaPersona() {
-  $name = document.getElementById("name");
-  $dob = document.getElementById("dob");
+function  altaPersona() {
 
-  const apiUrl = host + '/person/create';
-  const data = {
-    name: $name.value,
-    dob: $dob.value,
-  };
+      let ruta= host + "/person/create";     
 
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      "Authorization": "Bearer " + jwtoken
-    },
-    body: JSON.stringify(data),
-  };
+      const json = {
+        name: $name.value,
+        dob: $dob.value,
+      };
+      
+      
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", ruta)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.setRequestHeader('Authorization', 'Bearer ' + jwtoken)
+      xhr.send(JSON.stringify(json))
 
-  fetch(apiUrl, requestOptions)
-    .then(response => {
-      /*if (!response.ok) {
-        throw new Error('Network response was not ok');
+      xhr.onreadystatechange = function () {
+              if (this.readyState == 4 && this.status == 200) {
+                      var evento = JSON.parse(this.responseText);
+                      obtenerLista();
+                      borrarCamposPersona();
+              }
       }
-      */
-      return response.json();
-    })
-    .then(data => {
-      personas = JSON.stringify(data.message, null, 2);
-    })
-    .catch(error => {
-      // console.error ('Error:', error);
-      //$mensaje.textContent = JSON.stringify(data.message, null, 2);
-      //console.log("error");
-    });
+    }
+
+
+
+
+function incluirPersonaAEvento(){
+
+
+    var checkboxes = document.getElementsByName('companions');
+    $asistentes.innerHTML="";
+    arrayViajerosDTO=[];
+    for (var checkbox of checkboxes)
+    {
+        if (checkbox.checked) {
+            arrayViajerosDTO.push(arrayPersonas[checkbox.value]);
+            $asistentes.innerHTML+=arrayPersonas[checkbox.value].name + "<br>";
+        }
+    }
 
 }
+
 
 function readCookie(name) {
   //webgrafia https://www.quirksmode.org/js/cookies.html#script

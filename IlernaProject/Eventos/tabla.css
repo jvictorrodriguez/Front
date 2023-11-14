@@ -7,6 +7,7 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: #333;
+    
   }
   
   table {
@@ -71,7 +72,7 @@
   .delete:hover {
     color: #dc2a2a;
   }
-  form{    /*CONTIENE TODA LA PÁGINA*/
+  /* form{    /*CONTIENE TODA LA PÁGINA*/
     display: flex;              /** El conjunto de estos 3 atributos centran el container*/
     /*align-items: center;        /*vertical*/
     justify-content: center;    /*horizontal*/

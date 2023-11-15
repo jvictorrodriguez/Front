@@ -10,8 +10,8 @@ let dates = {};
 let fecha = [];
 let idUsuario;
 
-let arrayEventos;
-let companions;
+let arrayEventos; // json con todos los eventos suscritos por el usuarios logueado
+//let companions;
 
 
 /********VARIABLES  BUSCAR EVENTOS************* */
@@ -26,7 +26,7 @@ let $tbodyPersonas = document.getElementById("tbodyPersonas");
 let $tbodyTusEventos = document.getElementById("tbodyTusEventos");
 
 /* FORMULARIO */
-let $tituloOpcionEvento= document.getElementById("tituloOpcionEvento");
+let $tituloOpcionEvento = document.getElementById("tituloOpcionEvento");
 let $description = document.getElementById("description");
 let $calendar = document.getElementById("calendar");
 let $fechas = document.getElementById("fechas");                //p
@@ -82,7 +82,7 @@ function getUsername() {
                 if (this.readyState == 4 && this.status == 200) {
                         usuarioObj = JSON.parse(this.responseText);
                         username = usuarioObj.username;
-                        $saludo.innerHTML+=username;
+                        $saludo.innerHTML += username;
                 }
         }
 }
@@ -144,33 +144,30 @@ function obtenerRegistrosTusEventosDelServidor() {
         xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                         var registros = JSON.parse(this.responseText);
-                        arrayEventos=registros;
-                        companions=arrayEventos[0].companions;
+                        arrayEventos = registros;
                         mostrarRegistrosTusEventos(registros);
                 }
         }
 }
 
 
-// <td>${evento.companions[0].name}</td>
 function mostrarRegistrosTusEventos(registros) {
         let contenidoTabla = "";
         for (const evento of registros) {
                 let contenidoFila = `<tr>
-                ` +
-                        //<td>${evento.id}</td>
-                        `
                 <td>${evento.description}</td>
                 <td>${evento.date}</td>
                 <td>${evento.place}</td>
                 <td>${evento.price}</td>
                 <td>${evento.creator.username}</td>
-                <td>` 
+                <td>`
                 for (const person of evento.companions) {
-                contenidoFila+=person.name +" ";
+                        contenidoFila += person.name + " ";
                 }
-                contenidoFila+=`
+                
+                contenidoFila += `
                 </td>
+                
                 <td>
                         <i onClick="obtenerUnRegistro(${evento.id})" class="material-symbols-outlined">Edit</i> 
                         <i onClick="borrarRegistro(${evento.id})" class="material-symbols-outlined">Delete</i>
@@ -191,7 +188,7 @@ function altaEvento() {
                 place: $place.value,
                 price: $price.value,
                 companions: arrayViajerosDTO,
-                creator:usuarioObj
+                creator: usuarioObj
         };
 
         let xhr = new XMLHttpRequest();
@@ -228,7 +225,7 @@ function addUserToEvent(idRegistro) {
         }
 }
 function obtenerUnRegistro(id) {
-        $tituloOpcionEvento.innerHTML="Modificar";
+        $tituloOpcionEvento.innerHTML = "Modificar";
 
         idRegistro = id;
         let ruta = host + "/event/" + id;
@@ -251,21 +248,28 @@ function obtenerUnRegistro(id) {
 
 }
 function mostrarRegistroEnFormulario(evento) {
+        //Recibimos el objeto evento. Se trata de un único evento
+        //Mostramos en el formulario los campos del evento
         $description.value = evento.description;
         $calendar.value = evento.date;
         $place.value = evento.place;
         $price.value = evento.price;
-        $asistentes.innerHTML="";
-        let checkAsistentes="";
+        $asistentes.innerHTML = "";
+        let checkAsistentes = "";
         for (const person of evento.companions) {
-                checkAsistentes+=`
+                checkAsistentes += `
                 <input type="checkbox" name="companions" id="${person.name}" value="${person.id}" checked>
                 <label for=${person.name}>${person.name}</label>`
-        }        
-        
-        $asistentes.innerHTML=checkAsistentes;
-        
+        }
+        $asistentes.innerHTML = checkAsistentes;
+        activarCheckTablaArrayPersonas(evento);
+
 }
+
+
+
+
+
 
 function cambiarBotones() {
         $borrarTuEvento.classList.toggle("hidden");
@@ -280,7 +284,8 @@ function borrarCampos() {
         $price.value = "";
         fecha = [];
         $fechas.innerHTML = "";
-        $asistentes.innerHTML="";
+        $asistentes.innerHTML = "";
+        $checkboxesBDPersonas
 
 }
 
@@ -303,7 +308,8 @@ function guardarCambios() {
         xhr.open("PUT", ruta, true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
-        xhr.send(JSON.stringify(json))
+        console.log(JSON.stringify(json));
+        xhr.send(JSON.stringify(json));
 
         xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
@@ -311,7 +317,7 @@ function guardarCambios() {
                         obtenerRegistrosTusEventosDelServidor();
                         cambiarBotones();
                         borrarCampos();
-                        $tituloOpcionEvento.innerHTML="Añadir";
+                        $tituloOpcionEvento.innerHTML = "Añadir";
                 }
         }
 }
@@ -349,9 +355,10 @@ function readCookie(name) {
 }
 
 /** Mostrar personas */
-function obtenerPersonasUsuario() {
 
-        let ruta = host + "/person/allByUser";
+function obtenerPersonasUsuario() {
+/*
+        let ruta = host + "/person/allByUserddddddddddddddddddddddddddd";
 
 
         let xhr = new XMLHttpRequest();
@@ -371,6 +378,7 @@ function obtenerPersonasUsuario() {
 
                                 let contenidoFila = `<tr>
                                 <td>${persona.id}</td>
+                                <td></td>
                                 <td>${persona.name}</td>
                                 <td>${persona.dob}</td>
                                 <td>${persona.age}</td>
@@ -386,6 +394,41 @@ function obtenerPersonasUsuario() {
                         $tbodyPersonas.innerHTML = contenidoTabla;
                 }
         }
+        */
 }
 
+
+function activarCheckTablaArrayPersonas(evento) {
+
+        let $arrayCheckPersonas = document.getElementsByName("listaPersonasBD");
+        let numeroPersonasBD = $arrayCheckPersonas.length;
+
+        for (const personaEnEvento of evento.companions) {
+                for (var i = 0; i < arrayPersonas.length; i++) {
+                        if (personaEnEvento.id == arrayPersonas[i].id)
+                                $arrayCheckPersonas[i].checked = true;
+                }
+        }
+
+}
+
+function incluirPersonaAEvento() {
+
+        $checkboxesBDPersonas = document.getElementsByName('listaPersonasBD');
+        $asistentes.innerHTML = "";
+        arrayViajerosDTO = [];
+        let checkAsistentes="";
+        for (var checkbox of $checkboxesBDPersonas) {
+                if (checkbox.checked) {
+                        let codigo= checkbox.value;
+                        arrayViajerosDTO.push(arrayPersonas[codigo]);
+                        
+                        checkAsistentes += `
+                        <input type="checkbox" name="companions" id="${arrayPersonas[codigo].name}" value="${arrayPersonas[codigo].id}" checked>
+                        <label for=${arrayPersonas[codigo].name}>${arrayPersonas[codigo].name}</label>`
+                        }
+                        $asistentes.innerHTML = checkAsistentes;
+                        
+                }
+        }
 

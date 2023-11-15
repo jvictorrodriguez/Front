@@ -8,8 +8,9 @@
 /********VARIABLES  PERSONAS ************* */
 //let $tbodyPersonas=document.getElementById("tbodyPersonas"); DECLARADO EN EVENTOS.JS
 let tituloOpcionPersonas= document.getElementById("tituloOpcionPersonas");
-let arrayPersonas;
+let arrayPersonas;      //Contiene la BD de personas del usuario activo
 let arrayViajerosDTO=[];
+let $checkboxesBDPersonas;
 
 /* FORMULARIO */
 let $tituloOpcion = document.getElementById("tituloOpcion");
@@ -79,15 +80,15 @@ function mostrarRegistrosPersonas(personas) {
         <i onClick="borrarRegistroPersona(${arrayPersonas[i].id})" class="material-symbols-outlined">Delete</i>
       </td>
       <td>
-          <input type="checkbox" name="companions" value="${i}"
+          <input type="checkbox" id="${arrayPersonas[i].id}" name="listaPersonasBD" value="${i}"
           onClick="incluirPersonaAEvento()">
       </td>
     </tr>
 `;
-
     contenidoTabla += contenidoFila;
   }
 $tbodyPersonas.innerHTML = contenidoTabla;
+
 }
 
 /*********** GET DEL REGISTRO *** OBTENER UN ÚNICO  REGISTRO*****************/
@@ -194,22 +195,9 @@ function  altaPersona() {
 
 
 
-function incluirPersonaAEvento(){
 
 
-    var checkboxes = document.getElementsByName('companions');
-    $asistentes.innerHTML="";
-    arrayViajerosDTO=[];
-    for (var checkbox of checkboxes)
-    {
-        if (checkbox.checked) {
-            arrayViajerosDTO.push(arrayPersonas[checkbox.value]);
-            $asistentes.innerHTML+=arrayPersonas[checkbox.value].name + "<br>";
-        }
-    }
-
-}
-
+   
 
 function readCookie(name) {
   //webgrafia https://www.quirksmode.org/js/cookies.html#script

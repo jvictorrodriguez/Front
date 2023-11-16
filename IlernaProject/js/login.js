@@ -1,5 +1,6 @@
 /*************** V A R I A B L E S ********************/
  token="";
+ let eventos="eventos.html";
 /*  Títulos */
 var $title = document.getElementById("title");
 /*Botones Radio*/
@@ -161,7 +162,7 @@ function logInJwt() {
         document.cookie = "token="+token;
        
       
-        window.open("./Eventos/eventos.html")
+        window.open(eventos)
 
         
         })

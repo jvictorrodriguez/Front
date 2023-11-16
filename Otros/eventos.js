@@ -1,76 +1,78 @@
+// Importa los elementos del DOM 
+//import * as DOM from "./domElement.js";
+
+
 /*************** V A R I A B L E S ********************/
 let jwtoken = readCookie("token");
 let host = "http://localhost:9090"
-let $saludo = document.getElementById("saludo");
+let arrayEventos; // json con todos los eventos suscritos por el usuarios logueado
 
-let username;
+//let username;
 let usuarioObj;
 let idRegistro;
 let dates = {};
 let fecha = [];
 let idUsuario;
 
-let arrayEventos; // json con todos los eventos suscritos por el usuarios logueado
+
+
+
+
+
+const rutaObtenUsername= host+ "/user";
+
+
 //let companions;
 
 
-/********VARIABLES  BUSCAR EVENTOS************* */
-let $emailBuscarEventos = document.getElementById("emailBuscarEventos");
-let $botonBuscarEventos = document.getElementById("botonBuscarEventos");
-let $tbodyBusqueda = document.getElementById("tbodyBusqueda");
-
-/********VARIABLES  PERSONAS ************* */
-let $tbodyPersonas = document.getElementById("tbodyPersonas");
-
-/********VARIABLES  TUS  EVENTOS************* */
-let $tbodyTusEventos = document.getElementById("tbodyTusEventos");
-
-/* FORMULARIO */
-let $tituloOpcionEvento = document.getElementById("tituloOpcionEvento");
-let $description = document.getElementById("description");
-let $calendar = document.getElementById("calendar");
-let $fechas = document.getElementById("fechas");                //p
-let $addDate = document.getElementById("addDate");              //button//listener
-let $date = document.getElementById("date");
-let $place = document.getElementById("place");
-let $price = document.getElementById("price");
-let $asistentes = document.getElementById("asistentes");
-
-let $borrarTuEvento = document.getElementById("borrarTuEvento");
-let $enviarTuEvento = document.getElementById("enviarTuEvento");                //botón//listener
-let $modificarTuEvento = document.getElementById("modificarTuEvento");          //botón//listener
-
 /****************LISTENERS******************/
-
 window.onload = function () {
         getUsername();
-        obtenerRegistrosTusEventosDelServidor();
-        obtenerPersonasUsuario();
+        //console.log(usuarioObj.username);
+        //      obtenerRegistrosTusEventosDelServidor();
+        //obtenerPersonasUsuario();
 }
 
 //LISTENERS BUSCAR EVENTOS
-$botonBuscarEventos.addEventListener("click", () => {
+DOM.$botonBuscarEventos.addEventListener("click", () => {
         buscarEventosPorCorreo();
 })
 
 //LISTENERS TUS EVENTOS
-$addDate.addEventListener("click", () => {
+DOM.$addDate.addEventListener("click", () => {
         addDateToList()
 });
 
-$enviarTuEvento.addEventListener("click", () => {
+DOM.$enviarTuEvento.addEventListener("click", () => {
         altaEvento();
 });
 
-$modificarTuEvento.addEventListener("click", () => {
+DOM.$modificarTuEvento.addEventListener("click", () => {
         guardarCambios();
 });
 
 
+
 /****************FUNCIONES******************/
 
+export function callApi(ruta){
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", ruta, true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                        return JSON.parse(this.responseText);
+                }
+        }   
+}
+
+
 function getUsername() {
-        let ruta = host + "/user";
+        const ruta = host + "/user";
 
         let xhr = new XMLHttpRequest();
         xhr.open("GET", ruta, true);
@@ -81,16 +83,17 @@ function getUsername() {
         xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                         usuarioObj = JSON.parse(this.responseText);
-                        username = usuarioObj.username;
-                        $saludo.innerHTML += username;
                 }
         }
 }
-
+function saludo(){
+        username = usuarioObj.username;
+        DOM.$saludo.innerHTML += username;
+}
 //BUSCAR EVENTOS
 function buscarEventosPorCorreo() {
 
-        let ruta = host + "/event/search?email=" + $emailBuscarEventos.value;
+        let ruta = host + "/event/search?email=" + DOM.$emailBuscarEventos.value;
 
         let xhr = new XMLHttpRequest();
         xhr.open("GET", ruta, true);
@@ -113,13 +116,14 @@ function buscarEventosPorCorreo() {
                                 <td>${evento.price}</td>
                         `
                                 contenidoFila += `<td>
-                                        <i onClick=" addUserToEvent(${evento.id})" class="material-symbols-outlined">Add</i> 
+                                        <i onClick=" addUserToEvent(${evento.id})" 
+                                        class="material-symbols-outlined">Add</i> 
                                         
                                 </td>
                                 `
                                 contenidoTabla += contenidoFila;
                         }
-                        $tbodyBusqueda.innerHTML = contenidoTabla;
+                        DOM.$tbodyBusqueda.innerHTML = contenidoTabla;
                 }
         }
 }
@@ -127,13 +131,13 @@ function buscarEventosPorCorreo() {
 
 //FUNCIONES TUS EVENTOS
 function addDateToList() {
-        $fechas.innerHTML += $calendar.value + "<br>";
-        fecha.push($calendar.value);
+        DOM.$fechas.innerHTML += $calendar.value + "<br>";
+        fecha.push(DOM.$calendar.value);
 }
 
 function obtenerRegistrosTusEventosDelServidor() {
 
-        let ruta = host + "/event/allByUser"
+        const ruta = host + "/event/allByUser"
 
         let xhr = new XMLHttpRequest();
         xhr.open("GET", ruta, true);
@@ -154,8 +158,13 @@ function obtenerRegistrosTusEventosDelServidor() {
 function mostrarRegistrosTusEventos(registros) {
         let contenidoTabla = "";
         for (const evento of registros) {
+                let rruta= "demo_form.php?name1=value1&name2=value2";
                 let contenidoFila = `<tr>
-                <td>${evento.description}</td>
+                <td><a href="eventoDetalle.html"+"?"+"id"+ ${evento.id}>
+
+                
+                ${evento.description}</td>
+                </a>
                 <td>${evento.date}</td>
                 <td>${evento.place}</td>
                 <td>${evento.price}</td>
@@ -175,12 +184,12 @@ function mostrarRegistrosTusEventos(registros) {
                 `
                 contenidoTabla += contenidoFila;
         }
-        $tbodyTusEventos.innerHTML = contenidoTabla;
+        DOM.$tbodyTusEventos.innerHTML = contenidoTabla;
 }
 
 function altaEvento() {
 
-        let ruta = host + "/event";
+        const ruta = host + "/event";
 
         const json = {
                 description: $description.value,
@@ -208,7 +217,7 @@ function altaEvento() {
 
 function addUserToEvent(idRegistro) {
 
-        let ruta = host + "/event/addUserToEvent/" + idRegistro
+        const ruta = host + "/event/addUserToEvent/" + idRegistro
 
         let xhr = new XMLHttpRequest();
         xhr.open("POST", ruta);
@@ -225,11 +234,10 @@ function addUserToEvent(idRegistro) {
         }
 }
 function obtenerUnRegistro(id) {
-        $tituloOpcionEvento.innerHTML = "Modificar";
+        DOM.$tituloOpcionEvento.innerHTML = "Modificar";
 
         idRegistro = id;
-        let ruta = host + "/event/" + id;
-
+        const ruta = host + "/event/" + id;
 
 
         let xhr = new XMLHttpRequest();
@@ -250,18 +258,19 @@ function obtenerUnRegistro(id) {
 function mostrarRegistroEnFormulario(evento) {
         //Recibimos el objeto evento. Se trata de un único evento
         //Mostramos en el formulario los campos del evento
-        $description.value = evento.description;
-        $calendar.value = evento.date;
-        $place.value = evento.place;
-        $price.value = evento.price;
-        $asistentes.innerHTML = "";
+        DOM.$description.value = evento.description;
+        DOM.$calendar.value = evento.date;
+        DOM.$place.value = evento.place;
+        DOM.$price.value = evento.price;
+        DOM.$asistentes.innerHTML = "";
+        
         let checkAsistentes = "";
         for (const person of evento.companions) {
                 checkAsistentes += `
                 <input type="checkbox" name="companions" id="${person.name}" value="${person.id}" checked>
                 <label for=${person.name}>${person.name}</label>`
         }
-        $asistentes.innerHTML = checkAsistentes;
+        DOM.$asistentes.innerHTML = checkAsistentes;
         activarCheckTablaArrayPersonas(evento);
 
 }
@@ -272,27 +281,27 @@ function mostrarRegistroEnFormulario(evento) {
 
 
 function cambiarBotones() {
-        $borrarTuEvento.classList.toggle("hidden");
-        $modificarTuEvento.classList.toggle("hidden");
-        $enviarTuEvento.classList.toggle("hidden");
+        DOM.$borrarTuEvento.classList.toggle("hidden");
+        DOM.$modificarTuEvento.classList.toggle("hidden");
+        DOM.$enviarTuEvento.classList.toggle("hidden");
 }
 
 function borrarCampos() {
-        $description.value = "";
-        $calendar.value = "";
-        $place.value = "";
-        $price.value = "";
-        fecha = [];
-        $fechas.innerHTML = "";
-        $asistentes.innerHTML = "";
-        $checkboxesBDPersonas
+        DOM.$description.value = "";
+        DOM.$calendar.value = "";
+        DOM.$place.value = "";
+        DOM.$price.value = "";
+        DOM.fecha = [];
+        DOM.$fechas.innerHTML = "";
+        DOM.$asistentes.innerHTML = "";
+        DOM.$checkboxesBDPersonas
 
 }
 
 
 function guardarCambios() {
 
-        let ruta = host + "/event/update";
+        const ruta = host + "/event/update";
 
         const json = {
                 id: idRegistro,
@@ -354,48 +363,8 @@ function readCookie(name) {
         return null;
 }
 
-/** Mostrar personas */
-
-function obtenerPersonasUsuario() {
-/*
-        let ruta = host + "/person/allByUserddddddddddddddddddddddddddd";
 
 
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", ruta, true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
-        xhr.send();
-
-        xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                        var personas = JSON.parse(this.responseText);
-
-
-                        let contenidoTabla = "";
-
-                        for (const persona of personas) {
-
-                                let contenidoFila = `<tr>
-                                <td>${persona.id}</td>
-                                <td></td>
-                                <td>${persona.name}</td>
-                                <td>${persona.dob}</td>
-                                <td>${persona.age}</td>
-                            
-                        `
-                                contenidoFila += `<td>
-                                <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-                                        
-                                </td>
-                                `
-                                contenidoTabla += contenidoFila;
-                        }
-                        $tbodyPersonas.innerHTML = contenidoTabla;
-                }
-        }
-        */
-}
 
 
 function activarCheckTablaArrayPersonas(evento) {
@@ -414,8 +383,8 @@ function activarCheckTablaArrayPersonas(evento) {
 
 function incluirPersonaAEvento() {
 
-        $checkboxesBDPersonas = document.getElementsByName('listaPersonasBD');
-        $asistentes.innerHTML = "";
+        DOM.$checkboxesBDPersonas = document.getElementsByName('listaPersonasBD');
+        DOM.$asistentes.innerHTML = "";
         arrayViajerosDTO = [];
         let checkAsistentes="";
         for (var checkbox of $checkboxesBDPersonas) {
@@ -427,7 +396,7 @@ function incluirPersonaAEvento() {
                         <input type="checkbox" name="companions" id="${arrayPersonas[codigo].name}" value="${arrayPersonas[codigo].id}" checked>
                         <label for=${arrayPersonas[codigo].name}>${arrayPersonas[codigo].name}</label>`
                         }
-                        $asistentes.innerHTML = checkAsistentes;
+                        DOM.$asistentes.innerHTML = checkAsistentes;
                         
                 }
         }

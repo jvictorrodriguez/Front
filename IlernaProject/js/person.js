@@ -30,7 +30,7 @@ let $modificarPersona = document.getElementById("modificarPersona");//botón
 
 window.addEventListener('load', function () {
   //obtener();    TODO
-  obtenerLista();
+  //obtenerLista();
 });
 
 $enviarPersona.addEventListener("click", () => {
@@ -44,10 +44,9 @@ $modificarPersona.addEventListener("click",()=>{
 
 
 /******************** OBTENER INFORMACIÓN DE REGISTROS DEL SERVIDOR********************** */
-
+/*
 let obtenerLista = async () => {
 
-  jwtoken = readCookie("token");
 
   const peticion = await fetch(host + "/person/allByUser",
     {
@@ -63,7 +62,7 @@ let obtenerLista = async () => {
   mostrarRegistrosPersonas(personas);
   
 }
-
+*/
 /******************* MOSTRAR TABLA ***************** */
 function mostrarRegistrosPersonas(personas) {
   let contenidoTabla = "";

@@ -26,5 +26,8 @@ export const $modificarTuEvento = document.getElementById("modificarTuEvento"); 
 
 //========== VARIABLES  PERSONAS ========== 
 export const $tbodyPersonas = document.getElementById("tbodyPersonas");
+export const $name = document.getElementById("name");                        //DTO
+export const $dob = document.getElementById("dob");                          //DTO
 
-
+export const $enviarPersona = document.getElementById("enviarPersona");      //botón
+export const $modificarPersona = document.getElementById("modificarPersona");//botón

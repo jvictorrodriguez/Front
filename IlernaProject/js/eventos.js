@@ -1,17 +1,34 @@
-// Importa los elementos del DOM 
+//============== V A R I A B L E S  ========================
+// Exporta las variables inicializadas
+//export const { jwtoken, host } = initializeVariables();
+export const jwtoken = readCookie("token");
+export const host = "http://localhost:9090";
 import * as DOM from "./domElement.js";
+import { arrayPersonas} from "./person.js"; //variables
 
 
-/*************** V A R I A B L E S ********************/
-const jwtoken = readCookie("token");
-const host = "http://localhost:9090"
+/*
 
-let usuarioObj;
-let fecha = []; 
-let idRegistro;
-let listaEventosPorCorreo;
-let arrayEventosDelUsuario;
-let arrayParticipantesDTO;
+
+// Función para inicializar las variables antes de exportarlas
+function initializeVariables() {
+        const jwtoken = readCookie("token");
+        const host = "http://localhost:9090";
+        return { jwtoken, host };
+}
+      
+
+
+*/
+
+let arrayParticipantes;        //Contiene un array de los participantes del eventoDTO no el de la BD del usuario.
+
+let usuarioObj;  //Hace referencia al objeto del usuario logueado       
+let fecha = [];         //Array de fechas- Recoge las fechas que se añaden al crear/modificar un evento
+let idRegistro;                 //Variable que contiene el campo id del registro y que se utiliza para Alta/Recuperar/Guardar un evento
+let listaEventosPorCorreo;      //Recoge un array de todos los eventos del usuario localizados por su correo electrónico
+let arrayEventosDelUsuario;     //Recoge un array de todos los eventos del PROPIO USUARIO
+
 
 
 
@@ -31,10 +48,9 @@ const rutaBorrarEvento = host + "/event/delete/" //+ id;
 window.onload = function () {
     getUsername();   //Función asíncrona que llamará a saludo cuando reciba el nombre del usuario
     obtenerEventosDelUsuarioDesdeElServidor();
-    obtenerPersonasUsuario();
 }
 
-//LISTENERS BUSCAR EVENTOS
+//=========== LISTENERS BUSCAR EVENTOS ====================
 DOM.$botonBuscarEventos.addEventListener("click", () => {
         buscarEventosPorCorreo();
 })
@@ -52,7 +68,7 @@ function anadeSuscripcionEventosListeners(){
         });
 }
 
-//LISTENERS TUS EVENTOS
+//=========== LISTENERS TUS EVENTOS ====================
 function anadeTusEventosListeners(){
         // Selecciona los elementos i.MisEventos
         let botonesAccionesALosRegistros = document.querySelectorAll('i.MisEventos');
@@ -84,11 +100,16 @@ DOM.$modificarTuEvento.addEventListener("click", () => {
         guardarCambios();
 });
 
-//===============FUNCIONES====================
+//==================================================
+//=========== F U N C I O N E S ====================
+//==================================================
+
+//=================== SALUDO ===================
 function saludo(username){
     DOM.$saludo.innerHTML+=username.toUpperCase();
 }
 
+//=================== GET USERNAME ===================
 function getUsername(){
     
     const ruta= rutaGetUsername;
@@ -107,7 +128,11 @@ function getUsername(){
             }
     }
 }
+//==================================================
+//===========  B U S Q U E D A  ====================
+//==================================================
 
+//=================== BUSCAR EVENTOS  =======================
 function buscarEventosPorCorreo(){
     
     const ruta= rutaBuscarEventosPorCorreo  + DOM.$emailBuscarEventos.value;
@@ -127,6 +152,7 @@ function buscarEventosPorCorreo(){
     }
 }
 
+//=================== MOSTRAR EVENTOS PARA SUSCRIBRIRSE ===================
 function mostrarRegistrosEventosParaSuscribirse(eventos){
     let contenidoTabla = "";
     for (const evento of eventos) {
@@ -148,13 +174,17 @@ function mostrarRegistrosEventosParaSuscribirse(eventos){
  
 }
 
-//FUNCIONES TUS EVENTOS
+//==================================================
+//===========  FUNCIONES TUS EVENTOS  ====================
+//==================================================
+
+//=================== AÑADE FECHAS A LA LISTA ===================
 function addDateToList() {
         DOM.$fechas.innerHTML += DOM.$calendar.value + "<br>";
         fecha.push(DOM.$calendar.value);
 }
 
-
+//=================== OBTENER TODOS LOS EVENTOS ===================
 function obtenerEventosDelUsuarioDesdeElServidor(){
     const ruta= rutaObterEventosUsuarioDelServidor;
 
@@ -174,13 +204,14 @@ function obtenerEventosDelUsuarioDesdeElServidor(){
     }
 }
 
+//=================== MOSTRAR TABLA ===================
 function mostrarRegistrosTusEventos(registros) {
 
     let contenidoTabla = "";
     for (const evento of registros) {
-            let rruta= "demo_form.php?name1=value1&name2=value2";
+            let paginaDetalle= "demo_form.php?name1=value1&name2=value2";
             let contenidoFila = `<tr>
-            <td><a href="eventoDetalle.html"+"?"+"id"+ ${evento.id}>
+            <td><a href="eventoDetalle.html?id=${evento.id}">
             
             ${evento.description}</td>
             </a>
@@ -204,7 +235,7 @@ function mostrarRegistrosTusEventos(registros) {
     DOM.$tbodyTusEventos.innerHTML = contenidoTabla;
 }
 
-
+//=================== ALTA DE UN EVENTO ===================
 function altaEvento() {
 
     const ruta= rutaAltaEvento;
@@ -213,7 +244,7 @@ function altaEvento() {
             date: fecha,
             place: DOM.$place.value,
             price: DOM.$price.value,
-           // companions: arrayViajerosDTO, //TODO
+            companions: arrayParticipantes, 
             creator: usuarioObj
     };
 
@@ -227,12 +258,13 @@ function altaEvento() {
     xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                     let evento = JSON.parse(this.responseText);
-                    let idRegistro = evento.id;
+                    idRegistro = evento.id;
                     anadirUsuarioAlEvento(idRegistro);
             }
     }
 }
 
+//=================== AÑADIR UN USUARIO A UN EVENTO ===================
 function anadirUsuarioAlEvento(idRegistro) {
 
     const ruta = rutaAnadirUsuarioAlEvento + idRegistro
@@ -254,6 +286,7 @@ function anadirUsuarioAlEvento(idRegistro) {
     }
 }
 
+//=================== OBTENER UN EVENTO ===================
 function obtenerUnEvento(idEvento) {
 
     const ruta= rutaObtenerUnEvento + idEvento;
@@ -263,19 +296,78 @@ function obtenerUnEvento(idEvento) {
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
     xhr.send();
+    
 
     xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                     let registro = JSON.parse(this.responseText);
                     mostrarRegistroEnFormulario(registro)
                     cambiarBotones();
-                    activarCheckTablaArrayPersonas(idEvento);//TODO
+                  //  activarCheckTablaArrayPersonas(registro);//TODO
             }
     }
-    //idRegistro = idEvento;
+    idRegistro = idEvento;
     DOM.$tituloOpcionEvento.innerHTML = "Modificar";
 }
 
+//=================== GUARDAR CAMBIOS  ===================
+function guardarCambios() {
+
+        const ruta = rutaModificarUnEvento
+    
+        const json = {
+                id: idRegistro,
+                description: DOM.$description.value,
+                date: fecha,
+                place: DOM.$place.value,
+                price: DOM.$price.value,
+                companions: arrayParticipantes 
+        };
+    
+    
+        let xhr = new XMLHttpRequest();
+        xhr.open("PUT", ruta, true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
+        xhr.send(JSON.stringify(json));
+    
+        xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                        let registro = JSON.parse(this.responseText);
+                        obtenerEventosDelUsuarioDesdeElServidor();
+                        cambiarBotones();
+                        borrarCampos();
+                        DOM.$tituloOpcionEvento.innerHTML = "Añadir";
+                }
+        }
+    }
+    
+    //=================== BORRAR UN EVENTO ===================
+    function borrarRegistro(id) {
+    
+            const ruta = rutaBorrarEvento + id;
+    
+            let xhr = new XMLHttpRequest();
+            xhr.open("DELETE", ruta, true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
+            xhr.send();
+    
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                  console.log('Registro eliminado con éxito');
+                  obtenerEventosDelUsuarioDesdeElServidor();
+                } else {
+                  console.log('Error al eliminar el registro');
+                }
+               };
+    }
+    
+//============================================================
+//=================== F O R M U L A R I O  ===================
+//============================================================
+
+//=================== FORMULARIO - MOSTRAR REGISTROS DE EVENTOS ===================
 function mostrarRegistroEnFormulario(evento) {
     //Recibimos el objeto evento. Se trata de un único evento
     //Mostramos en el formulario los campos del evento
@@ -285,22 +377,42 @@ function mostrarRegistroEnFormulario(evento) {
     DOM.$price.value = evento.price;
     DOM.$asistentes.innerHTML = "";
     
-    let checkAsistentes = "";
+
+
+
+
+    //Creamos un array para guardar los ids de los participantes
+    let idsParticipantes=[];
+    //Inicializamos el arrayParticipantes que contendrá los objetos Personas participantes
+    arrayParticipantes=[];
+    
+    //Añadimos los ids de los participantes a ese array.
+    //Añadimos los objetos personas al arrayParticipantes.
+
     for (const person of evento.companions) {
-            checkAsistentes += `
-            <input type="checkbox" name="companions" id="${person.name}" value="${person.id}" checked>
-            <label for=${person.name}>${person.name}</label>`
+        idsParticipantes.push(evento.companions.id);
+        arrayParticipantes.push(person);
+        //Mostramos en el formulario los nombres de los participantes
+        DOM.$asistentes.innerHTML+= person.name + "<br>";
     }
-    DOM.$asistentes.innerHTML = checkAsistentes;
+
+
+    
    
 }
 
+//=================== CAMBIAR BOTONES ===================
 function cambiarBotones() {
+
     DOM.$borrarTuEvento.classList.toggle("hidden");
     DOM.$modificarTuEvento.classList.toggle("hidden");
     DOM.$enviarTuEvento.classList.toggle("hidden");
+    if(DOM.$modificarTuEvento.classList.contains("hidden")){
+        borrarCampos();
+    }
 }
 
+//=================== BORRAR CAMPOS ===================
 function borrarCampos() {
     DOM.$description.value = "";
     DOM.$calendar.value = "";
@@ -311,98 +423,16 @@ function borrarCampos() {
     DOM.$asistentes.innerHTML = "";
     DOM.$checkboxesBDPersonas
 
-}
-
-function guardarCambios() {
-
-    const ruta = rutaModificarUnEvento
-
-    const json = {
-            id: idRegistro,
-            description: DOM.$description.value,
-            date: fecha,
-            place: DOM.$place.value,
-            price: DOM.$price.value,
-            companions: arrayViajerosDTO //TODO
-    };
-
-
-    let xhr = new XMLHttpRequest();
-    xhr.open("PUT", ruta, true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
-    console.log(JSON.stringify(json));
-    xhr.send(JSON.stringify(json));
-
-    xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                    let registro = JSON.parse(this.responseText);
-                    obtenerEventosDelUsuarioDesdeElServidor;
-                    cambiarBotones();
-                    borrarCampos();
-                    DOM.$tituloOpcionEvento.innerHTML = "Añadir";
-            }
-    }
-}
-
-
-function borrarRegistro(id) {
-
-        const ruta = rutaBorrarEvento + id;
-
-        let xhr = new XMLHttpRequest();
-        xhr.open("DELETE", ruta, true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
-        xhr.send();
-
-        xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                        obtenerEventosDelUsuarioDesdeElServidor;
-                }
+        DOM.$asistentes.innerHTML="";
+        arrayParticipantes=[];
+        for (const checkbox of $checkBoxBDPersonas) {
+                checkbox.checked=false;
         }
+        
 }
 
-
-
-function activarCheckTablaArrayPersonas(evento) {
-
-        let $arrayCheckPersonas = document.getElementsByName("listaPersonasBD");
-        let numeroPersonasBD = $arrayCheckPersonas.length;
-
-        for (const personaEnEvento of evento.companions) {
-                for (var i = 0; i < arrayPersonas.length; i++) {
-                        if (personaEnEvento.id == arrayPersonas[i].id)
-                                $arrayCheckPersonas[i].checked = true;
-                }
-        }
-
-}
-
-function incluirPersonaAEvento() {
-
-        DOM.$checkboxesBDPersonas = document.getElementsByName('listaPersonasBD');
-        DOM.$asistentes.innerHTML = "";
-        arrayViajerosDTO = [];
-        let checkAsistentes="";
-        for (var checkbox of $checkboxesBDPersonas) {
-                if (checkbox.checked) {
-                        let codigo= checkbox.value;
-                        arrayViajerosDTO.push(arrayPersonas[codigo]);
-                        
-                        checkAsistentes += `
-                        <input type="checkbox" name="companions" id="${arrayPersonas[codigo].name}" value="${arrayPersonas[codigo].id}" checked>
-                        <label for=${arrayPersonas[codigo].name}>${arrayPersonas[codigo].name}</label>`
-                        }
-                        DOM.$asistentes.innerHTML = checkAsistentes;
-                        
-                }
-        }
-
-
-
-
-function readCookie(name) {
+//=================== COOKIES ===================
+export function readCookie(name) {
     //webgrafia https://www.quirksmode.org/js/cookies.html#script
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');

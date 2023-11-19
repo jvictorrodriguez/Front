@@ -28,7 +28,7 @@ $enviar.addEventListener("click", () => {
   altaPersona();
 })
 
-$modificar.addEventListener("click",()=>{
+$modificar.addEventListener("click", () => {
   guardarCambios(idRegistro);
 })
 
@@ -51,7 +51,7 @@ let obtenerLista = async () => {
 
   const personas = await peticion.json();
   mostrarRegistros(personas);
-  
+
 }
 
 /******************* MOSTRAR TABLA ***************** */
@@ -77,12 +77,13 @@ function mostrarRegistros(personas) {
 }
 
 /*********** GET DEL REGISTRO *** OBTENER UN ÚNICO  REGISTRO*****************/
-let obtenerRegistro = async (id)=> {
+let obtenerRegistro = async (id) => {
   jwtoken = readCookie("token");
-  idRegistro=id;
+  idRegistro = id;
 
-  const peticion = await fetch(host+"/person/"+id,
- 
+  $tituloOpcion.innerHTML = "Editar";
+  const peticion = await fetch(host + "/person/" + id,
+
     {
       method: "GET",
       headers: {
@@ -93,21 +94,21 @@ let obtenerRegistro = async (id)=> {
 
   const persona = await peticion.json();
 
-    $name.value= persona.name;
-    $dob.value= persona.dob;
+  $name.value = persona.name;
+  $dob.value = persona.dob;
 
-//Cambiar botones
-$modificar.classList.toggle("hidden");
-$enviar.classList.toggle("hidden");
+  //Cambiar botones
+  $modificar.classList.toggle("hidden");
+  $enviar.classList.toggle("hidden");
 
 }
 
-/************** BORRAR REGISTRO *******************/ 
+/************** BORRAR REGISTRO *******************/
 let borrarRegistro = async (id) => {
 
   jwtoken = readCookie("token");
 
-  const peticion = await fetch(host + "/person/"+id,
+  const peticion = await fetch(host + "/person/" + id,
     {
       method: "DELETE",
       headers: {
@@ -115,37 +116,68 @@ let borrarRegistro = async (id) => {
         "Authorization": "Bearer " + jwtoken
       }
     });
-//obtenerLista();
+  //obtenerLista();
 }
 
-/********************** EDITAR REGISTRO ******************/
-let guardarCambios = async (id) => {
-
-jwtoken = readCookie("token");
- let registro={};
-    registro.name= $name.value;
-    registro.dob = $dob.value;
- 
+/********************** GUARDAR CAMBIOS EN  REGISTRO ******************/
+function guardarCambios(){
 
 
-  const peticion = await fetch(host + "/person/"+id,
+  let registro = {};
+  registro.name = $name.value;
+  registro.dob = $dob.value;
+
+  let xhr = new XMLHttpRequest(); 
+  xhr.open("PUT", "http://localhost:9090/person/1");
+  //xhr.open("PUT", host+"person/"+idRegistro);
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr.setRequestHeader("Authorization", "Bearer " + jwtoken);
+
+  xhr.send(JSON.stringify(registro));
+
+
+/*let guardarCambios = async () => {
+
+  //jwtoken = readCookie("token");
+  let registro = {};
+  registro.name = $name.value;
+  registro.dob = $dob.value;
+
+
+
+  let xhttp = new XMLHttpRequest();
+
+
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      // Typical action to be performed when the document is ready:
+      document.getElementById("demo").innerHTML = xhttp.responseText;
+    }
+  };
+  xhttp.open("GET", "filename", true);
+  xhttp.header
+  xhttp.send();
+
+  const peticion = await fetch(host + "/person/" + idRegistro,
     {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Accept": "application/json",
         "Authorization": "Bearer " + jwtoken
       },
       body: JSON.stringify(registro)
     });
-//Cambiar botones
-$modificar.classList.toggle("hidden");
-$enviar.classList.toggle("hidden");
-//borrar campos
-$name.value="";
-$dob.value="";
 
-obtenerLista();
-  
+*/
+  //Cambiar botones
+  $modificar.classList.toggle("hidden");
+  $enviar.classList.toggle("hidden");
+  //borrar campos
+  $name.value = "";
+  $dob.value = "";
+
+  obtenerLista();
+
 }
 
 /******************** ALTA REGISTRO *************** */

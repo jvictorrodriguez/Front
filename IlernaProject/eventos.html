@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" defer src="./js/eventos.js"></script>
+    <script type="module" defer src="./js/person.js"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="./css/tabla.css">
+    <title>Eventos</title>
+</head>
+<body>
+    <!--------------  B U S C A R       E V E N T O S ----------------->
+    <h1>Eventos</h1>
+    <h4 id="saludo">Hola </h4>
+    <hr>
+    <!------------------------------------------------------------------>
+    <h3>Busca eventos</h3>
+
+    <label for="emailBuscarEventos">Correo</label>
+    <input type="email" name="emailBuscarEventos" id="emailBuscarEventos">
+    <button id="botonBuscarEventos">Buscar</button>
+    <table id="tablaBusqueda">
+        <thead>
+            <tr>
+                <td>Descripción</td>
+                <td>Fecha</td>
+                <td>Lugar</td>
+                <td>Precio</td>
+                <td>Apuntarme</td>
+            </tr>
+        </thead>
+        <tbody id="tbodyBusqueda">
+        </tbody>
+    </table>
+    <hr>
+    <!--------------  M U E S T R A    T U S     E V E N T O S ----------------->
+    <h3>Tus Eventos</h3>
+    <table id="tablaTusEventos">
+        <thead>
+            <tr>
+                <td>Descripción</td>
+                <td>Fecha</td>
+                <td>Lugar</td>
+                <td>Precio</td>
+                <td>Creado por</td>
+                <td>Asistentes</td>
+                <td>Acciones</td>
+            </tr>
+        </thead>
+        <tbody id="tbodyTusEventos">
+        </tbody>
+    </table>
+    <hr>
+    
+    <!--------------  F O R M U L A R I O   E V E N T O S ----------------->
+    <h3>Formulario Eventos</h3>    
+    <h4 id="tituloOpcionEvento">Añadir</h4>
+    <form id="eventos">
+        <div class="input-group">
+            <div class="input-field">
+                <i class="material-symbols-outlined">description</i>
+                <input type="text" id="description" placeholder="Descripción" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <i class="material-symbols-outlined">calendar_month</i>
+                <input type="date" id="calendar" autocomplete="off">
+                <p id="fechas"></p>
+                <button type="button" id="addDate">Añadir</button>
+            </div>
+            <div class="input-field">
+                <i class="material-symbols-outlined">place</i>
+                <input type="text" id="place" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <i class="material-symbols-outlined">Euro</i>
+                <input type="text" id="price" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <p>Asistentes:</p>
+               <p id="asistentes"></p>
+            </div>
+            <div class="btn-field">
+                <button id="borrarTuEvento" class="" type="reset">Borrar</button>
+                <button id="enviarTuEvento" class="" type="button">Enviar</button>
+                <button id="modificarTuEvento" class="hidden" type="button">Modificar</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+        
+    <!--------------  P E R S O N A S ----------------->
+     <!--------------  T A B L A    P E R S O N A S ----------------->
+        <h3>Person</h3>
+        <table id="tablaPersonas">
+         <thead>
+             <tr>
+                 <td>Añadir</td>
+                 <td>Nombre</td>
+                 <td>Fecha Nacimiento</td>
+                 <td>Edad</td>
+                 <td>Acciones</td>
+             </tr>
+         </thead>
+         <tbody id="tbodyPersonas">
+         </tbody>
+         </table>
+         <hr>
+        <!--------------  F O R M U L A R I O     P E R S O N A S ----------------->
+        <h3>Formulario Personas</h3>
+        <h3 id="tituloOpcionPersonas">Añadir</h3>
+        <form>
+            <div class="input-group">
+                <div class="input-field">
+                    <i class="material-symbols-outlined">Person</i>
+                    <input type="text" id="name" placeholder="Nombre" autocomplete="off">
+                </div>
+                <div class="input" id="calendar">
+                    <i class="material-symbols-outlined">calendar_month</i>
+                    <input type="date" id="dob" autocomplete="off">
+                </div>
+                <div class="btn-field">
+                    <button id="borrar" class="" type="reset">Borrar</button>
+                    <button id="enviarPersona" class="" type="button">Enviar</button>
+                    <button id="modificarPersona" class="hidden" type="button">Modificar</button>
+                </div>
+            </div>
+        </form>
+</body>
+</html>
